@@ -1,0 +1,246 @@
+body,header{
+    padding: 0;
+    margin: 0;
+    background: #98FB98
+}
+header{
+    width: 100%;
+    height: 100%;
+    background: white;
+}
+div{
+    /*border: 1px solid #eee;*/
+    padding: 0
+}
+.topo{
+    /*border: 1px solid black;*/
+    width: 1200px;
+    margin: 0 auto;
+    height: 100%;
+    background: black;
+    padding-top: 50px;
+}
+.login{
+    border-bottom: 1px solid #eee;
+    height: 50px;
+    position: absolute;
+    width: 1200px;
+    top: 0;
+}
+.login form{
+    /*border: 1px solid white;*/
+    float: right;
+    width: max-content;
+    height: 30px;
+    margin-top: 10px;
+}
+.login form input{
+    height: 30px;
+    margin: 0;
+    border: none;
+    text-align: center;
+    background: none;
+    outline-color: white;
+    color: white
+}
+.login form input:first-of-type{
+    border: none;
+    border-right: 1px solid #eee;
+}
+
+.login form input[type = 'Submit']{
+    background: #123;
+    padding: 0 10px;
+    color:red
+}
+
+
+
+
+.logo{
+    width: 150px;
+    height: 100px;
+    text-align: center;
+    float: left;
+    background: url('Imagens/jmsoccer-logo.jpg') no-repeat center center;
+    background-size: auto 100%
+}
+.menu{
+    /*border: 1px solid #eee;*/
+    float: right;
+    height: 100px;
+}
+.menu ul{
+    /*    border: 1px solid pink;*/
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    height:100px
+}
+.menu li{
+    /*    border: 1px solid pink;*/
+    margin: 0;
+    padding: 0 30px;
+    margin-top: 25px;
+    display: inline-block;
+    width: max-content;
+    line-height: 50px;
+    height:50px;
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: white
+}
+
+.banner{
+    /*border: 1px solid pink;*/
+    float: left;
+    padding: 50px 70px;
+    width: 1200px;
+    box-sizing: border-box;
+    position: relative;
+}
+.banner img{
+    position: absolute;
+    height: 500px;
+    top: 50px;
+    right: 50px;
+}
+.titulos{
+    float: left;
+    color: white;
+    /*border: 1px solid pink;*/
+    font-weight: 900;
+    font-size: 120px;
+    margin:0;
+    width: 100%;
+}
+.subtitulos{
+    float: left;
+    color: silver;
+    margin: 0;
+    margin-top: -15px;
+    /*border: 1px solid pink;*/
+    font-weight: 900;
+    width: max-content;
+    font-size: 60px;
+    width: 100%;
+}
+.subtitulos2{
+    float: left;
+    color: silver;
+    margin: 0;
+    /*border: 1px solid pink;*/
+    font-weight: 900;
+    width: max-content;
+    font-size: 20px;
+    margin-top: 15px;
+    width: 100%;
+}
+
+button{
+    margin-top: 60px;
+    width: max-content;
+    background: none;
+    border: 1px solid #eee;
+    color: red;
+    font-size: 25px;
+    padding: 20px 50px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.formulario{
+    /*border: 1px solid black;*/
+    position: absolute;
+    height: max-content;
+    top: 50px;
+    right: 50px;
+}
+.formulario input{
+    height:50px;
+    margin: 0;
+    width: 400px;
+    border: none;
+    border-bottom: 1px solid black;
+    text-align: center;
+    background: none;
+    outline-color: white;
+    color: black;
+    text-transform: uppercase
+}
+
+.formulario input[type = 'Submit'],input[type = 'reset']{
+    background: black;
+    width: 150px;
+    margin: 10px;
+    float: right;
+    padding: 0 10px;
+    box-sizing: border-box;
+    color:red
+}
+
+.link{
+    font-size: 20px;
+    font-weight: 700;
+    color: #212121;
+    text-decoration: none;
+    padding: 10px !important;
+    margin: 50px 10px;
+    float: left;
+    width: max-content;
+    text-align: center
+}
+.link:first-of-type{
+    border-right: 1px solid black;
+    font-size: 20px;
+    font-weight: 700;
+    color: #212121;
+    text-decoration: none;
+}
+
+.corpo{
+    width: 1200px;
+    margin: 0 auto;
+    height: max-content;
+}
+
+.localiza input[type = 'text']{
+    height:50px;
+    margin: 0;
+    width: 400px;
+    border: none;
+    border-bottom: 1px solid black;
+    text-align: center;
+    background: none;
+    outline-color: white;
+    color: black;
+    text-transform: uppercase
+   
+}
+
+.localiza input[type = 'submit']{
+    background: black;
+    width: 150px;
+    margin: 10px;
+    float: right;
+    padding: 0 10px;
+    box-sizing: border-box;
+    color:white;
+    border: none;    
+}
+
+

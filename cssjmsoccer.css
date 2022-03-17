@@ -1,0 +1,46 @@
+
+body,header{
+    padding: 0;
+    margin: 0;
+    background: /* #000000 /* #7B68EE */;
+}/*
+header{
+    width: 100%;
+    height: 100%;
+    background: white;
+}*/
+
+
+.topo{
+    /*border: 1px solid black;*/
+    width: 1200px;
+    margin: 0 auto;
+    height: 31%;
+    background: #000000 /* #00FA9A */;
+    padding-top: 10px;
+}
+
+.logo{
+    width: 150px;
+    height: 100px;
+    text-align: center;
+    float: left;
+    background: url('Imagens/jmsoccer-logo.jpg') no-repeat center center;
+    background-size: auto 100%
+}
+
+.banner{
+    /*border: 1px solid pink;*/
+    float: left;
+    padding: 50px 70px;
+    width: 1200px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.banner img{
+    position: absolute;
+    height: 500px;
+    top: 50px;
+    right: 50px;
+}
