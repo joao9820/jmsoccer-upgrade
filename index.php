@@ -3,12 +3,12 @@
             <?php 
 				
 
-				   if(isset($_GET["login"]) && $_GET["login"] == 0) { ?>
+				   /* if(isset($_GET["login"]) && $_GET["login"] == 0) { ?>
             <div class="alert alert-danger" role="alert">Você Não Tem Acesso!</div>
 
 
 
-            <?php  }    ?>
+            <?php  }  */   ?>
             <div class="container">
                 </br></br>
                 <h1 class="titulos">
@@ -75,6 +75,5 @@
     <div class="corpo" style="margin-top: -50px;color: white">
 
     </div>
-</body>
 
-</html>
+    <?php require_once("includes/site/footer.php") ?>

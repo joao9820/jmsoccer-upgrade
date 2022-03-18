@@ -1,8 +1,20 @@
-<?php require_once("includes/loja/header_loja.php"); ?>
+<?php require_once("includes/loja/header_loja.php"); 
+require_once("bancojmsoccer.php"); 
+
+   $usuarioLogado = isset($_SESSION['usuario_logado']);
+
+    $cat = isset($_GET['cat']) ? $_GET['cat']  : '';
+
+    //var_dump($cat);
+
+   $camisas = listarProdutos($cat);
+
+?>
 
     <style>
         .card-img-top {
             object-fit: cover;
+            height: 320px;
             padding: 10px;
         }
 
@@ -31,171 +43,61 @@
         </li>
     </ul> -->
     <div class="container">
-    
         <div class="d-flex justify-content-center align-items-center cat-camisas">
             <div class="btn-group me-2 w-100" role="group" aria-label="Second group">
-                <a href="loja.php" class="btn btn-secondary">Gerais</a>
-                <a href="timeNacional.php" class="btn btn-secondary">Time Nacional</a>
-                <a href="timeInternacional.php" class="btn btn-secondary">Time Internacional</a>
-                <a href="selecao.php" class="btn btn-secondary">Seleções</a>
+                <a href="loja.php?cat=0" class="btn <?= !$cat ? 'btn-dark' : 'btn-secondary' ?>">Gerais</a>
+                <a href="loja.php?cat=1" class="btn <?= $cat && $cat == 1 ? 'btn-dark' : 'btn-secondary' ?>">Time Nacional</a>
+                <a href="loja.php?cat=2" class="btn <?= $cat && $cat == 2 ? 'btn-dark' : 'btn-secondary' ?>">Time Internacional</a>
+                <a href="loja.php?cat=3" class="btn <?= $cat && $cat == 3 ? 'btn-dark' : 'btn-secondary' ?>">Seleções</a>
             </div>
         </div>
         <div class="row">
+
+            <?php if($camisas && $camisas->num_rows) : 
+            
+            while($camisa = mysqli_fetch_assoc($camisas)) : ?>
+    
             <div class="col-3 mb-3">
                 <div class="card h-100">
-                    <img class=" card-img-top" src="Imagens/Liverpool-hk-1819-516x680-2-.png" alt="Card image cap">
+                    <img class=" card-img-top" src="Imagens/<?= $camisa['img'] ?>" alt="Card image cap">
                     <div class="card-body">
-                        <h5 class="card-title text-center">Camisa Liverpool</h5>
-                        <p class="card-text text-center">Camisa Modelo 2021/2022.</p>
-                        <h5 class="card-text text-center">Por Apenas: 229,99</h5>
-                        <a href="#" class="btn btn-primary" style="margin-left: 35px;">Add ao Carrinho</a>
+                        <h5 class="card-title text-center"><?= $camisa['nome'] ?></h5>
+                        <p class="card-text text-center">Camisa Modelo <?= $camisa['modelo'] ?>.</p>
+                        <h5 class="card-text text-center">Por Apenas: <?= $camisa['preco'] ?></h5>
+                        
+                            <div class="d-flex justify-content-center w-100 mb-3">
+                                <div>
+                                    <p class="mr-1 mb-0">TAM:</p> 
+                                    <select name="tamanho">
+                                        <option value="P" >P</option>
+                                        <option value="M" >M</option>
+                                        <option value="G" >G</option>
+                                        <option value="GG" >GG</option>
+                                    </select>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="mr-1 mb-0">QTD:</p>
+                                    <select name="quantidade">
+                                        <?php for($i = 1; $i <= 10; $i++) : ?>
+                                            <option value="<?= $i ?>"><?= $i ?></option>
+                                        <?php endfor ?>
+                                    </select>
+                                </div>
+                            </div>
+                        
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-primary w-100" onclick="addCarrinho()">
+                                <i class="fas fa-shopping-cart mr-2"></i>Comprar
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </div>        
+        <?php 
+        endwhile;
+        endif; ?>
 
-
-            <div class="col-3 mb-3">
-                <div class="card h-100">
-                    <img class=" card-img-top" style="height: 320px;" src="Imagens/camisa brasil azul.jpg"
-                    alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Camisa Brasil</h5>
-                        <p class="card-text text-center">Camisa Modelo 2021/2022.</p>
-                        <h5 class="card-text text-center">Por Apenas: 329,99</h5>
-                        <a href="#" class="btn btn-primary" style="margin-left: 35px;">Add ao Carrinho</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-3 mb-3">
-                <div class="card h-100">
-                    <img class=" card-img-top" style="height: 320px" src="Imagens/camisa cheseal.jpg"
-                    alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Camisa Chelsea</h5>
-                        <p class="card-text text-center">Camisa Modelo 2021/2022.</p>
-                        <h5 class="card-text text-center">Por Apenas: 229,99</h5>
-                        <a href="#" class="btn btn-primary" style="margin-left: 35px;">Add ao Carrinho</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-3 mb-3">
-                <div class="card h-100">
-                    <img class=" card-img-top" style="height: 320px;" src="Imagens/Camisa-Boca-Junior.jpg"
-                    alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Camisa Boca Jr</h5>
-                        <p class="card-text text-center">Camisa Modelo 2021/2022.</p>
-                        <h5 class="card-text text-center">Por Apenas: 119,99</h5>
-                        <a href="#" class="btn btn-primary" style="margin-left: 35px;">Add ao Carrinho</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-3 mb-3">
-                <div class="card h-100">
-                    <img class=" card-img-top" style="height: 320px;" src="Imagens/camisa frana.jpg"
-                    alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Camisa França</h5>
-                        <p class="card-text text-center">Camisa Modelo 2021/2022.</p>
-                        <h5 class="card-text text-center">Por Apenas: 118,99</h5>
-                        <a href="#" class="btn btn-primary" style="margin-left: 35px;">Add ao Carrinho</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-3 mb-3">
-                <div class="card">
-                    <img class="card-img-top" style="height: 320px;" src="Imagens/camisa paris.jpg"
-                        alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Camisa França</h5>
-                        <p class="card-text text-center">Camisa Modelo 2021/2022.</p>
-                        <h5 class="card-text text-center">Por Apenas: 118,99</h5>
-                        <a href="#" class="btn btn-primary" style="margin-left: 35px;">Add ao Carrinho</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-3 mb-3">
-                <div class="card">
-                    <img class="card-img-top" style="height: 320px;" src="Imagens/crystalpalace-ak-1819-516x680-1-.png"
-                        alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Camisa Crystal Palace</h5>
-                        <p class="card-text text-center">Camisa Modelo 2020/2021.</p>
-                        <h5 class="card-text text-center">Por Apenas: 199,99</h5>
-                        <a href="#" class="btn btn-primary" style="margin-left: 35px;">Add ao Carrinho</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-3 mb-3">
-                <div class="card h-100">
-                    <img class=" card-img-top" style="height: 320px;"
-                    src="Imagens/crystalpalace-hk-1819-516x680-2-.png" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Camisa Crystal Palace</h5>
-                        <p class="card-text text-center">Camisa Modelo 2021/2022.</p>
-                        <h5 class="card-text text-center">Por Apenas: 248,99</h5>
-                        <a href="#" class="btn btn-primary" style="margin-left: 35px;">Add ao Carrinho</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-3 mb-3">
-                <div class="card h-100">
-                    <img class=" card-img-top" style="height: 320px;" src="Imagens/Liverpool-hk-1819-516x680-2-.png"
-                    alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Camisa Liverpool</h5>
-                        <p class="card-text text-center">Camisa Modelo Clássico</p>
-                        <h5 class="card-text text-center">Por Apenas: 248,99</h5>
-                        <a href="#" class="btn btn-primary" style="margin-left: 35px;">Add ao Carrinho</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-3 mb-3">
-                <div class="card h-100">
-                    <img class=" card-img-top" style="height: 320px;" src="Imagens/mancity-hk-1819-516x680-2-.png"
-                    alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Camisa Man. City</h5>
-                        <p class="card-text text-center">Camisa Jogador nº 9</p>
-                        <h5 class="card-text text-center">Por Apenas: 248,99</h5>
-                        <a href="#" class="btn btn-primary" style="margin-left: 35px;">Add ao Carrinho</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-3 mb-3">
-                <div class="card h-100">
-                    <img class=" card-img-top" style="height: 320px;" src="Imagens/myQlQcXp.png" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Camisa Liverpool</h5>
-                        <p class="card-text text-center">Camisa Modelo Clássico</p>
-                        <h5 class="card-text text-center">Por Apenas: 248,99</h5>
-                        <a href="#" class="btn btn-primary" style="margin-left: 35px;">Add ao Carrinho</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-3 mb-3">
-                <div class="card h-100">
-                    <img class=" card-img-top" style="height: 320px;" src="Imagens/southampton-hk-1819-516x680-3-.png"
-                    alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Camisa Liverpool</h5>
-                        <p class="card-text text-center">Camisa Modelo Clássico</p>
-                        <h5 class="card-text text-center">Por Apenas: 248,99</h5>
-                        <a href="#" class="btn btn-primary" style="margin-left: 35px;">Add ao Carrinho</a>
-                    </div>
-                </div>
-            </div>
-
+            
 
 
         </div>
@@ -215,8 +117,18 @@
             loginInput.focus();
           }
 
+        }
+
+        function addCarrinho(){
+            
+            if(!verificarSessao()){
+
+                alert("Para adicionar o produto no carrinho é necessário realizar o login");
+
+            }
 
         }
+
     </script>
 
     <?php require_once('includes/loja/footer_loja.php') ?>

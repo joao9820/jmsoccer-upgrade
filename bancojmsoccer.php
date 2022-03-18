@@ -20,7 +20,9 @@ function validaLogin ($usuario, $senha) {
     return $login;
 }
 
-function insereCamiseta($conexao, $camiseta) {
+function insereCamiseta($camiseta) {
+
+    $conexao = (new Conexao())->getConexao();
 
     $query = "insert into camiseta (time, modelo, cor, valor, prazo) values 
 						('{$camiseta->time}','{$camiseta->modelo}', '{$camiseta->cor}', '{$camiseta->valor}', '{$camiseta->prazo}')";
@@ -29,6 +31,22 @@ function insereCamiseta($conexao, $camiseta) {
 }
 
 // ----------------------------------------------------------------------------
+
+function listarProdutos($cat){
+
+    $conexao = (new Conexao())->getConexao();
+
+    $query = "SELECT produtos.id, produtos.nome, produtos.img, produtos.modelo, produtos.preco, cat_camisetas.nome as cat_nome 
+    FROM produtos INNER JOIN cat_camisetas ON produtos.cat_camiseta_id = cat_camisetas.id";
+
+    if($cat){
+        $query .= " WHERE cat_camisetas.id = $cat";
+    }
+
+    $resultado = mysqli_query($conexao, $query);
+    return $resultado;
+
+}
 
 
 function removecamiseta($conexao, $idcamiseta) {

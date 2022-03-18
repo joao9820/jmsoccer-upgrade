@@ -3,7 +3,7 @@
     <div class="topo">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.php">JMSOCCER</a>
+                <a class="navbar-brand" href="index.php"><i class="fas fa-futbol"></i> JMSOCCER</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -35,7 +35,7 @@
                 </div>
                 <div class="d-flex">
                         <form action="validaLogin.php" method="POST" class="form-inline my-2 my-lg-0">
-                            <a button class="btn btn-success" type="button" href="adm.php"> Administrador </a>
+                            <a button class="btn btn-success" type="button" href="adm.php"><i class="fas fa-user mr-2"></i>Administrador</a>
                         </form>
                     </div>
             </div>
