@@ -170,7 +170,7 @@ button{
     top: 50px;
     right: 50px;
 }
-.formulario input{
+.formulario input, .formulario select{
     height:50px;
     margin: 0;
     width: 400px;

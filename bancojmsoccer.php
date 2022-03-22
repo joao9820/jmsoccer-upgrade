@@ -24,9 +24,20 @@ function insereCamiseta($camiseta) {
 
     $conexao = (new Conexao())->getConexao();
 
-    $query = "insert into camiseta (time, modelo, cor, valor, prazo) values 
-						('{$camiseta->time}','{$camiseta->modelo}', '{$camiseta->cor}', '{$camiseta->valor}', '{$camiseta->prazo}')";
+    $query = "insert into produtos (nome, modelo, cor, preco, cat_camiseta_id) values 
+						('{$camiseta->nome}','{$camiseta->modelo}', '{$camiseta->cor}', '{$camiseta->preco}', '{$camiseta->cat}')";
+
     $resultado = mysqli_query($conexao, $query);
+    return $resultado;
+}
+
+function alteracamiseta($idcamiseta, $time, $modelo, $cor, $valor, $cat) {
+
+    $conexao = (new Conexao())->getConexao();
+
+    $sql = "UPDATE produtos SET nome='{$time}', modelo='{$modelo}', cor='{$cor}', preco='{$valor}', cat_camiseta_id = '{$cat}' WHERE id =$idcamiseta";
+    $resultado = mysqli_query($conexao, $sql);
+
     return $resultado;
 }
 
@@ -49,19 +60,31 @@ function listarProdutos($cat){
 }
 
 
-function removecamiseta($conexao, $idcamiseta) {
-    $query = "delete from camiseta where idcamiseta = '$idcamiseta';";
+function removecamiseta($idcamiseta) {
+
+    $conexao = (new Conexao())->getConexao();
+
+    $query = "delete from produtos where id = '$idcamiseta'";
     $resultado = mysqli_query($conexao, $query);
     return $resultado;
+
 }
 
 //-----------------------------------------------------------------------------------------
 
 
-function listacamiseta2($conexao) {
-    echo "<center><h1> Dados</h1></center>";
-    $sql = "select  * from camiseta";
+function listacamiseta() {
+
+    $conexao = (new Conexao())->getConexao();
+
+    echo "<center><h1 class='p-3'>Camisas</h1></center>";
+    $sql = "select produtos.id, produtos.nome, produtos.modelo, produtos.cor, produtos.preco, cat_camisetas.nome as categoria_nome FROM produtos 
+    left join cat_camisetas ON cat_camisetas.id = produtos.cat_camiseta_id";
+
+    
     $resultado = mysqli_query($conexao, $sql);
+
+    return $resultado;
 
 
     while ($array = mysqli_fetch_assoc($resultado)) {
@@ -72,30 +95,30 @@ function listacamiseta2($conexao) {
                 <table >
                     <tr>
 
-                        <td><input type=hidden value= <?php echo $array['idcamiseta']; ?> name=idcamiseta> </td> 
+                        <td><input type="hidden" value="<?php echo $array['id']; ?>" name="idcamiseta"> </td> 
                     </tr>
                     <tr>
                         <td>Time </td>
-                        <td> <input type=text value= <?php echo $array['time']; ?> name=time> </td>
+                        <td> <input type="text" value="<?php echo $array['nome']; ?>" name="time"> </td>
                     </tr>
                     <tr>
                         <td>Modelo</td>
-                        <td> <input type=text value= <?php echo $array['modelo']; ?>  name=modelo> </td>
+                        <td> <input type="text" value="<?php echo $array['modelo']; ?>"  name="modelo"> </td>
                     </tr>
                     <tr>
                         <td>Cor </td>
-                        <td> <input type=text value= <?php echo $array['cor']; ?> name=cor> </td>
+                        <td> <input type="text" value="<?php echo $array['cor']; ?>" name="cor"> </td>
                     </tr>
                     <tr>
                         <td>Valor</td>
-                        <td> <input type=text value= <?php echo $array['valor']; ?>  name=valor> </td>
+                        <td> <input type="text" value="<?php echo $array['preco']; ?>"  name="valor"> </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td>Prazo </td>
-                        <td> <input type=text value= <?php echo $array['prazo']; ?> name=prazo> </td>
-                    </tr>
+                        <td> <input type="text" value="<?php echo $array['prazo']; ?>" name="prazo"> </td>
+                    </tr> -->
                     <tr> 
-                        <td colspan =2><center><input type=submit value=Alterar class="btn btn-warning"></center> </td>
+                        <td colspan ="2"><input type="submit" value="Alterar" class="btn btn-warning"></td>
 						
                     </tr>
             </form>
@@ -103,7 +126,7 @@ function listacamiseta2($conexao) {
 
                 <table >	
                     <tr>
-                        <td><input type=hidden value= <?php echo $array['idcamiseta']; ?> name=idcamiseta>
+                        <td><input type=hidden value= <?php echo $array['id']; ?> name=idcamiseta>
                         <td>  <button type="hidden" class="btn btn-dark">Remover</button></td>
                     </tr>
                 </table >

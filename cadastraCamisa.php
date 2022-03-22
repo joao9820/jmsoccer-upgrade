@@ -17,11 +17,19 @@
 
             <div class="formulario">
                 <form action="adicionacamiseta.php" method="POST">
-                    <input type="text" name="time" placeholder="time"></br></br>
-                    <input type="text" name="modelo" placeholder="modelo"></br></br>
-                    <input type="text" name="cor" placeholder="cor"></br></br>
-                    <input type="text" name="valor" placeholder="valor"></br></br>
-                    <input type="text" name="prazo" placeholder="prazo"></br></br>
+                    <input type="text" name="nome" placeholder="Nome"></br></br>
+                    <input type="text" name="modelo" placeholder="Modelo"></br></br>
+                    <input type="text" name="cor" placeholder="Cor"></br></br>
+                    <div class="form-group">
+                        <select name="cat" class="form-control">
+                            <option value="" >Categoria</option>
+                            <option value="1" >Nacionais</option>
+                            <option value="2" >Internacionais</option>
+                            <option value="3" >Seleções</option>
+                        </select>
+                    </div>
+                    <input type="text" name="preco" placeholder="Preço"></br></br>
+                   <!--  <input type="text" name="prazo" placeholder="prazo"></br></br> -->
 
                     <input type="reset" value="Apagar" class="btn btn-danger">
                     <input type="submit" value="Cadastrar" class="btn btn-success">

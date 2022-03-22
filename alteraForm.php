@@ -1,28 +1,24 @@
-<?php include("conecta.php") ?>
+<?php require_once("bancojmsoccer.php") ?>
 <?php
 
-$idcamiseta = $_GET["idcamiseta"];
-$time = $_GET["time"];
-$modelo = $_GET["modelo"];
-$cor = $_GET["cor"];
-$valor = $_GET["valor"];
-$prazo = $_GET["prazo"];
+$idcamiseta = $_POST["id"];
+$time = $_POST["nome"];
+$modelo = $_POST["modelo"];
+$cor = $_POST["cor"];
+$preco = $_POST["preco"];
+$cat = $_POST["cat"];
 
-function alteracamiseta($conexao, $idcamiseta, $time, $modelo, $cor, $valor, $prazo) {
+/* 
+var_dump($idcamiseta, $time, $modelo, $cor, $preco);
+die();
+ */
 
-    $sql = "UPDATE camiseta SET time='{$time}', modelo='{$modelo}', cor='{$cor}', valor='{$valor}', prazo='{$prazo}'  WHERE idcamiseta =$idcamiseta";
-    $resultado = mysqli_query($conexao, $sql);
-
-    return $resultado;
-}
+$camisaAlterada = alteracamiseta($idcamiseta, $time, $modelo, $cor, $preco, $cat);
 
 //-------------------------------------------------
-if (alteracamiseta($conexao, $idcamiseta, $time, $modelo, $cor, $valor, $prazo)) {
+if ($camisaAlterada) {
     echo "Alterado";
-} else {
-    $error = mysqli_error($conexao);
-    echo $error;
-};
+} 
 ?>
-<a href="camisetalista.php">Voltar</a>
 
+<a href="camisetalista.php">Voltar</a>

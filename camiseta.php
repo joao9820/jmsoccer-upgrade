@@ -3,11 +3,12 @@
 class camiseta {
 
     public $idcamiseta;
-    public $time;
+    public $nome;
     public $modelo;
     public $cor;
-    public $valor;
+    public $preco;
     public $prazo;
+    public $cat;
 
 }
 

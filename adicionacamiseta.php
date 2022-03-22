@@ -11,20 +11,19 @@
     <section class="corpo">
 
         <div class="banner">
-            <?php require_once("conecta.php") ?>
             <?php require_once("bancojmsoccer.php") ?>
             <?php require_once("camiseta.php") ?>
 
             <?php
                 $camiseta = new camiseta();
-                $camiseta->time = $_POST["time"];
+                $camiseta->nome = $_POST["nome"];
                 $camiseta->modelo = $_POST["modelo"];
                 $camiseta->cor = $_POST["cor"];
-                $camiseta->valor = $_POST["valor"];
-                $camiseta->prazo = $_POST["prazo"];
+                $camiseta->preco = $_POST["preco"];
+                $camiseta->cat = $_POST["cat"];
 
 //Chama o método-------------------------------------------------
-                if (insereCamiseta($conexao, $camiseta)) {
+                if (insereCamiseta($camiseta)) {
                     ?>
 
 
@@ -41,15 +40,13 @@
 
             <div class="formulario">
                 <form action="adicionacamiseta.php" method="POST">
-                    <input type="text" name="time" placeholder="time" value="Time: <?= $camiseta->time ?>"></br></br>
+                    <input type="text" name="time" placeholder="time" value="Time: <?= $camiseta->nome ?>"></br></br>
                     <input type="text" name="modelo" placeholder="modelo"
                         value="Modelo: <?= $camiseta->modelo ?>"></br></br>
                     <input type="text" name="cor" placeholder="cor" value="Cor: <?= $camiseta->cor ?>"></br></br>
                     <input type="text" name="valor" placeholder="valor"
-                        value="Valor: <?= $camiseta->valor ?>"></br></br>
-                    <input type="text" name="prazo" placeholder="prazo"
-                        value="Prazo: <?= $camiseta->prazo ?>"></br></br>
-
+                        value="Valor: <?= $camiseta->preco ?>"></br></br>
+                    <input type="text" name="categoria" placeholder="categoria" value="Categoria: <?= $camiseta->cat ?>"></br></br>
                     <input type="reset" value="Apagar">
                     <input type="submit" value="Cadastrar">
 
