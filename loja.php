@@ -22,6 +22,10 @@ require_once("bancojmsoccer.php");
             height: 100px;
         }
 
+        .cat-camisas .btn-group .btn {
+            min-width: 250px;
+        }
+
         .btn-group .btn ~ .btn {
             margin-left: 2px !important;
         }
@@ -68,7 +72,7 @@ require_once("bancojmsoccer.php");
                             <div class="d-flex justify-content-center w-100 mb-3">
                                 <div>
                                     <p class="mr-1 mb-0">TAM:</p> 
-                                    <select name="tamanho">
+                                    <select name="tamanho" id="tam-<?= $camisa['id'] ?>">
                                         <option value="P" >P</option>
                                         <option value="M" >M</option>
                                         <option value="G" >G</option>
@@ -77,7 +81,7 @@ require_once("bancojmsoccer.php");
                                 </div>
                                 <div class="ml-3">
                                     <p class="mr-1 mb-0">QTD:</p>
-                                    <select name="quantidade">
+                                    <select name="quantidade" id="qtd-<?= $camisa['id'] ?>">
                                         <?php for($i = 1; $i <= 10; $i++) : ?>
                                             <option value="<?= $i ?>"><?= $i ?></option>
                                         <?php endfor ?>
@@ -86,7 +90,7 @@ require_once("bancojmsoccer.php");
                             </div>
                         
                         <div class="d-flex justify-content-center">
-                            <button type="button" class="btn btn-primary w-100" onclick="addCarrinho()">
+                            <button type="button" class="btn btn-primary w-100" onclick="addCarrinho('<?= $camisa['id'] ?>')">
                                 <i class="fas fa-shopping-cart mr-2"></i>Comprar
                             </button>
                         </div>
@@ -119,13 +123,23 @@ require_once("bancojmsoccer.php");
 
         }
 
-        function addCarrinho(){
+        function addCarrinho(id){
             
-            if(!verificarSessao()){
+           /*  if(!verificarSessao()){
 
                 alert("Para adicionar o produto no carrinho é necessário realizar o login");
 
-            }
+            } */
+
+            const tam = document.getElementById(`tam-${id}`);
+            const qtd = document.getElementById(`qtd-${id}`);
+
+            const tamValue = tam.options[tam.selectedIndex].value;
+            const qtdValue = qtd.options[qtd.selectedIndex].value;
+
+            console.log(tamValue, qtdValue);
+
+           //document.cookie = {'camisaId': id, 'tam' => tam, ''};
 
         }
 
