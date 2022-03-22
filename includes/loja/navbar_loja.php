@@ -1,3 +1,32 @@
+<style>
+
+    .fa-shopping-basket {
+        font-size: 20px;
+    }
+
+    .btn-cesta {
+        position: relative;
+    }
+
+    .btn-cesta .cesta-itens {
+        position: absolute;
+        border: 1px solid #fff;
+        border-radius: 50%;
+        /* transform: translate(-50%,-50%)!important; */
+        top: -1px;
+        right: 0;
+        font-size: .60rem;
+        line-height: 1;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 700;
+        color: #fff;
+    }
+
+</style>
 
 <header>
         <!-- A parte do cabeçalho começa aqui-->
@@ -23,6 +52,11 @@
                     </ul>
                 </div>
                 <div class="d-flex align-items-center">
+                    <button type="button" class="btn btn-cesta mr-3"><i class="fas fa-shopping-basket"></i>
+                        <span class="bg-danger p-2 cesta-itens">
+                            55
+                        </span>
+                    </button>
                     <?php if(isset($_SESSION["usuario_logado"])) : ?>
 
                         <div>
