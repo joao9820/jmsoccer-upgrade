@@ -137,11 +137,36 @@ require_once("bancojmsoccer.php");
             const tamValue = tam.options[tam.selectedIndex].value;
             const qtdValue = qtd.options[qtd.selectedIndex].value;
 
-            console.log(tamValue, qtdValue);
+            const camisaDados = {
+                "id": id,
+                "tamanho": tamValue,
+                "quantidade": qtdValue
+            };
 
-           //document.cookie = {'camisaId': id, 'tam' => tam, ''};
+            const carrinhoAtual = getCookie("carrinho");
 
-        }
+            if(!carrinhoAtual){
+
+                setCookie("carrinho", JSON.stringify([camisaDados]), 30);
+
+            }else{
+
+                const novoCarrinho = JSON.parse(carrinhoAtual);
+
+                novoCarrinho.push(camisaDados);
+
+                setCookie("carrinho", JSON.stringify(novoCarrinho), 30);
+
+            }
+
+           const notifyCarrinho = document.getElementById("notifyCarrinho");
+
+            console.log(getCookie("carrinho"));
+
+            notifyCarrinho.style.opacity = 1;
+           notifyCarrinho.textContent = (JSON.parse(getCookie("carrinho")).length);
+
+        }   
 
     </script>
 

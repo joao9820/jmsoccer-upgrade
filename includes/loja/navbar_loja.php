@@ -26,6 +26,12 @@
         color: #fff;
     }
 
+    header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
 </style>
 
 <header>
@@ -52,11 +58,11 @@
                     </ul>
                 </div>
                 <div class="d-flex align-items-center">
-                    <button type="button" class="btn btn-cesta mr-3"><i class="fas fa-shopping-basket"></i>
-                        <span class="bg-danger p-2 cesta-itens">
-                            55
+                    <a href="carrinho.php" role="button" class="btn btn-cesta mr-3"><i class="fas fa-shopping-basket"></i>
+                        <span class="bg-danger p-2 cesta-itens" id="notifyCarrinho" style="opacity: <?= isset($_COOKIE['carrinho']) ? 1 : 0 ?>;">
+                            <?= isset($_COOKIE['carrinho']) ? count(json_decode($_COOKIE['carrinho'])) : 0 ?>
                         </span>
-                    </button>
+                    </a>
                     <?php if(isset($_SESSION["usuario_logado"])) : ?>
 
                         <div>

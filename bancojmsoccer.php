@@ -43,6 +43,36 @@ function alteracamiseta($idcamiseta, $time, $modelo, $cor, $valor, $cat) {
 
 // ----------------------------------------------------------------------------
 
+function listarCarrinho(){
+
+    $conexao = (new Conexao())->getConexao();
+
+    $camisas = [];
+
+    if(isset($_COOKIE['carrinho'])){
+       
+        $carrinho = json_decode($_COOKIE['carrinho']);
+
+        foreach($carrinho as $item){
+
+            $sql = "SELECT nome, preco FROM produtos WHERE id = '{$item->id}'";
+            $resultado = mysqli_query($conexao, $sql);
+
+            $registro = mysqli_fetch_assoc($resultado);
+
+            $item->nome = $registro['nome'];
+            $item->preco =  $registro['preco'] * $item->quantidade;
+
+            $camisas[] = $item;
+
+        }
+
+    }
+
+    return $camisas;
+
+}
+
 function listarProdutos($cat){
 
     $conexao = (new Conexao())->getConexao();
