@@ -53,13 +53,15 @@ function listarCarrinho(){
        
         $carrinho = json_decode($_COOKIE['carrinho']);
 
-        foreach($carrinho as $item){
+        foreach($carrinho as $key => $item){
 
             $sql = "SELECT nome, preco FROM produtos WHERE id = '{$item->id}'";
             $resultado = mysqli_query($conexao, $sql);
 
             $registro = mysqli_fetch_assoc($resultado);
 
+            //O código é achave do array contido no cookie carrinho
+            $item->cod = $key;
             $item->nome = $registro['nome'];
             $item->preco =  $registro['preco'] * $item->quantidade;
 

@@ -161,7 +161,7 @@ require_once("bancojmsoccer.php");
 
            const notifyCarrinho = document.getElementById("notifyCarrinho");
 
-            console.log(getCookie("carrinho"));
+            //console.log(getCookie("carrinho"));
 
             notifyCarrinho.style.opacity = 1;
            notifyCarrinho.textContent = (JSON.parse(getCookie("carrinho")).length);

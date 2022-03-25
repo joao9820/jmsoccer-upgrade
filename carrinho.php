@@ -7,24 +7,34 @@
     <div class="container">
         <div class="row">
             <?php if(count($camisas)) : ?>
-            <table class="table table-striped">
+            <table class="table table-striped" id="tableItens">
                 <thead>
                     <tr>
-                        <th scope="col">ID</th>
+                        <th scope="col">Cód Item</th>
                         <th scope="col">Produto</th>
                         <th scope="col">Tamanho</th>
                         <th scope="col">Quantidade</th>
                         <th scope="col">Valor</th>
+                        <th scope="col" class="text-center">Ação</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach($camisas as $item) : ?>
                         <tr>
-                            <th scope="row"><?= $item->id ?></th>
+                            <th scope="row">
+                                <input type="hidden" value="<?= $item->cod ?>" />
+                                <?= $item->cod + 1 ?>
+                            </th>
                             <td><?= $item->nome ?></td>
                             <td style="margin-left: 40px;"><?= $item->tamanho ?></td>
                             <td><?= $item->quantidade ?></td>
                             <td><?= $item->preco ?></td>
+                            <td>
+                                <div class="d-flex justify-content-center">
+                                    <button class="btn btn-danger" onclick="removerItem('<?= $item->cod ?>', this)"><i class="fas fa-trash"></i>
+                                </button>
+                                </div>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -33,5 +43,65 @@
             <a href="finalizarCompra.php" class="btn btn-success">Finalizar Pedido</a>
         </div>
     </div>
+
+    <script>
+
+        function removerItem(cod){
+
+            const apagarItem = confirm(`Deseja remover o item ${Number(cod) + 1} do carrinho?`);
+
+            if(apagarItem){
+
+            const carrinho = getCookie('carrinho');
+
+                if(carrinho){
+
+                    const carrinhoItens = JSON.parse(carrinho);
+                    
+                    const novoCarrinho = carrinhoItens.filter((item, key) => key !== Number(cod));
+
+                    setCookie("carrinho", JSON.stringify(novoCarrinho), 30);
+
+                    //Retirar linha da tabela contendo o registro
+
+                    const linhasTabela = $("#tableItens>tbody>tr");
+
+                    /* console.log(linhasTabela); */
+
+                    const linhaDelete = linhasTabela.filter((key, itens) => {
+
+                        const input = itens.cells[0].querySelector('input');
+
+                        return input.value == cod;
+
+                    });
+
+                    linhaDelete.remove();
+
+                    //Atualizar número de itens no ícone do carrinho
+
+                    const notifyCarrinho = document.getElementById("notifyCarrinho");
+
+                    //console.log(getCookie("carrinho"));
+
+                    const numItensCarrinho = notifyCarrinho.textContent ? Number(notifyCarrinho.textContent) : 0;
+
+                    console.log(numItensCarrinho);
+
+                    if((numItensCarrinho - 1) > 0){
+                        notifyCarrinho.style.opacity = 1;
+                        notifyCarrinho.textContent = numItensCarrinho - 1;
+                    }else{
+                        notifyCarrinho.style.opacity = 0;
+                        notifyCarrinho.textContent = "";
+                    }
+
+                }
+                
+            }
+
+        }
+
+    </script>
 
  <?php require_once("includes/loja/footer_loja.php"); ?>
