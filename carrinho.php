@@ -18,8 +18,10 @@
                         <th scope="col" class="text-center">Ação</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php foreach($camisas as $item) : ?>
+                <tbody id="itensCarrinho">
+                    <?php 
+                    $total = 0;
+                    foreach($camisas as $item) : ?>
                         <tr>
                             <th scope="row">
                                 <input type="hidden" value="<?= $item->cod ?>" />
@@ -28,7 +30,7 @@
                             <td><?= $item->nome ?></td>
                             <td style="margin-left: 40px;"><?= $item->tamanho ?></td>
                             <td><?= $item->quantidade ?></td>
-                            <td><?= $item->preco ?></td>
+                            <td>R$ <span><?= $item->preco ?></span></td>
                             <td>
                                 <div class="d-flex justify-content-center">
                                     <button class="btn btn-danger" onclick="removerItem('<?= $item->cod ?>', this)"><i class="fas fa-trash"></i>
@@ -36,7 +38,19 @@
                                 </div>
                             </td>
                         </tr>
-                    <?php endforeach; ?>
+                    <?php 
+                    $total += $item->preco ;
+                    endforeach; ?>
+                </tbody>
+                <tbody id="somaItensCarrinho">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><b>TOTAL</b></td>
+                        <td><b>R$ <span id="totalProdutos"><?= $total ?></span></b></td>
+                        <td></td>
+                    </tr>
                 </tbody>
             </table>
             <?php endif; ?>
@@ -56,15 +70,19 @@
 
                 if(carrinho){
 
-                    const carrinhoItens = JSON.parse(carrinho);
-                    
-                    const novoCarrinho = carrinhoItens.filter((item, key) => key !== Number(cod));
+                    const carrinhoItens = JSON.parse(carrinho); 
 
+                    const novoCarrinho = carrinhoItens.filter(function (item, key){
+
+                        return key !== Number(cod);
+                    });
+
+                    
                     setCookie("carrinho", JSON.stringify(novoCarrinho), 30);
 
                     //Retirar linha da tabela contendo o registro
 
-                    const linhasTabela = $("#tableItens>tbody>tr");
+                    const linhasTabela = $("#tableItens>tbody#itensCarrinho>tr");
 
                     /* console.log(linhasTabela); */
 
@@ -72,7 +90,16 @@
 
                         const input = itens.cells[0].querySelector('input');
 
-                        return input.value == cod;
+                        if(input.value != cod)
+                            return false;
+
+                        var total = $("#totalProdutos").text();
+
+                        console.log(total, itens.cells[4].querySelector('span').textContent, Number(total) - Number(itens.cells[4].querySelector('span').textContent));
+
+                        $("#totalProdutos").text(Number(total) - Number(itens.cells[4].querySelector('span').textContent));
+
+                        return true;
 
                     });
 
@@ -86,7 +113,7 @@
 
                     const numItensCarrinho = notifyCarrinho.textContent ? Number(notifyCarrinho.textContent) : 0;
 
-                    console.log(numItensCarrinho);
+                    //console.log(numItensCarrinho);
 
                     if((numItensCarrinho - 1) > 0){
                         notifyCarrinho.style.opacity = 1;
