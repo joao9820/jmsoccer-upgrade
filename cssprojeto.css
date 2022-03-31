@@ -100,7 +100,7 @@ div{
     box-sizing: border-box;
     position: relative;
 }
-.banner img{
+.banner img:not("previaCamisa"){
     position: absolute;
     height: 500px;
     top: 50px;

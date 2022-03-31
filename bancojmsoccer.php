@@ -63,6 +63,7 @@ function listarCarrinho(){
             //O código é achave do array contido no cookie carrinho
             $item->cod = $key;
             $item->nome = $registro['nome'];
+            $item->valorUnit = $registro['preco'];
             $item->preco =  $registro['preco'] * $item->quantidade;
 
             $camisas[] = $item;

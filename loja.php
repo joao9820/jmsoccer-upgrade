@@ -22,12 +22,24 @@ require_once("bancojmsoccer.php");
             height: 100px;
         }
 
+        
+
         .cat-camisas .btn-group .btn {
             min-width: 250px;
         }
 
         .btn-group .btn ~ .btn {
             margin-left: 2px !important;
+        }
+
+        .modelo-camisa {
+            line-height: 1.5rem;
+            max-height: 3rem;
+            overflow: hidden;
+        }
+
+        #rowCamisas .card {
+            height: 600px;
         }
 
     </style>
@@ -55,44 +67,48 @@ require_once("bancojmsoccer.php");
                 <a href="loja.php?cat=3" class="btn <?= $cat && $cat == 3 ? 'btn-dark' : 'btn-secondary' ?>">Seleções</a>
             </div>
         </div>
-        <div class="row">
+        <div class="row" id="rowCamisas">
 
             <?php if($camisas && $camisas->num_rows) : 
             
             while($camisa = mysqli_fetch_assoc($camisas)) : ?>
     
             <div class="col-3 mb-3">
-                <div class="card h-100">
+                <div class="card">
                     <img class=" card-img-top" src="Imagens/<?= $camisa['img'] ?>" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title text-center"><?= $camisa['nome'] ?></h5>
-                        <p class="card-text text-center">Camisa Modelo <?= $camisa['modelo'] ?>.</p>
-                        <h5 class="card-text text-center">Por Apenas: <?= $camisa['preco'] ?></h5>
-                        
-                            <div class="d-flex justify-content-center w-100 mb-3">
-                                <div>
-                                    <p class="mr-1 mb-0">TAM:</p> 
-                                    <select name="tamanho" id="tam-<?= $camisa['id'] ?>">
-                                        <option value="P" >P</option>
-                                        <option value="M" >M</option>
-                                        <option value="G" >G</option>
-                                        <option value="GG" >GG</option>
-                                    </select>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div class="info-camisa">
+                            <h5 class="card-title text-center"><?= $camisa['nome'] ?></h5>
+                            <p class="card-text text-center modelo-camisa">Camisa Modelo <?= $camisa['modelo'] ?>.</p>
+                        </div>
+                        <div class="info-compra-camisa">
+                            <h5 class="card-text text-center">Por Apenas: R$ <?= $camisa['preco'] ?></h5>
+                            
+                                <div class="d-flex justify-content-center w-100 mb-3">
+                                    <div>
+                                        <p class="mr-1 mb-0">TAM:</p> 
+                                        <select name="tamanho" id="tam-<?= $camisa['id'] ?>">
+                                            <option value="P" >P</option>
+                                            <option value="M" >M</option>
+                                            <option value="G" >G</option>
+                                            <option value="GG" >GG</option>
+                                        </select>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="mr-1 mb-0">QTD:</p>
+                                        <select name="quantidade" id="qtd-<?= $camisa['id'] ?>">
+                                            <?php for($i = 1; $i <= 10; $i++) : ?>
+                                                <option value="<?= $i ?>"><?= $i ?></option>
+                                            <?php endfor ?>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="ml-3">
-                                    <p class="mr-1 mb-0">QTD:</p>
-                                    <select name="quantidade" id="qtd-<?= $camisa['id'] ?>">
-                                        <?php for($i = 1; $i <= 10; $i++) : ?>
-                                            <option value="<?= $i ?>"><?= $i ?></option>
-                                        <?php endfor ?>
-                                    </select>
-                                </div>
+                            
+                            <div class="d-flex justify-content-center">
+                                <button type="button" class="btn btn-primary w-100" onclick="addCarrinho('<?= $camisa['id'] ?>')">
+                                    <i class="fas fa-shopping-cart mr-2"></i>Comprar
+                                </button>
                             </div>
-                        
-                        <div class="d-flex justify-content-center">
-                            <button type="button" class="btn btn-primary w-100" onclick="addCarrinho('<?= $camisa['id'] ?>')">
-                                <i class="fas fa-shopping-cart mr-2"></i>Comprar
-                            </button>
                         </div>
                     </div>
                 </div>

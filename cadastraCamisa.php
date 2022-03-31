@@ -1,5 +1,21 @@
 <?php require_once("includes/admin/header_admin.php"); ?>
 
+<style>
+
+    #previaCamisa {
+        object-fit: contain;
+        height: 190px;
+        width: 100%;
+    }
+
+    .formulario form {
+        display: flex;
+        flex-direction: column;
+        width: 400px;
+    }
+
+</style>
+
     <section class="corpo">
 
         <div class="banner">
@@ -20,6 +36,9 @@
                     <input type="text" name="nome" placeholder="Nome"></br></br>
                     <input type="text" name="modelo" placeholder="Modelo"></br></br>
                     <input type="text" name="cor" placeholder="Cor"></br></br>
+                    <input type="file" name="img" id="imgCamisa" placeholder="Imagem"></br>
+                    <img src="Imagens/avatar/camisa.png" class="img-thumbnail" alt="Imagem da Camisa" id="previaCamisa">
+                    </br>
                     <div class="form-group">
                         <select name="cat" class="form-control">
                             <option value="" >Categoria</option>
@@ -31,11 +50,13 @@
                     <input type="text" name="preco" placeholder="Preço"></br></br>
                    <!--  <input type="text" name="prazo" placeholder="prazo"></br></br> -->
 
-                    <input type="reset" value="Apagar" class="btn btn-danger">
-                    <input type="submit" value="Cadastrar" class="btn btn-success">
+                   <div class="d-flex justify-content-between">
+                    <!-- <a class="btn btn-dark" href="camisetalista.php">listar camisas</a><span
+                            class="sr-only">(current)</span></a> -->
+                        <input type="reset" value="Limpar" class="btn btn-danger mr-2">
+                        <input type="submit" value="Cadastrar" class="btn bg-success text-light">
+                   </div>
 
-                    <a class="btn btn-dark" href="camisetalista.php">listar camisas</a><span
-                        class="sr-only">(current)</span></a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -49,5 +70,33 @@
 
 
     </section>
+
+    <script>
+
+        const inputImg = document.getElementById("imgCamisa");
+        const previaImg = document.getElementById("previaCamisa");
+
+        inputImg.addEventListener('change', function previaCamisa(){
+
+            const imgDados = this.files[0];
+
+            const reader = new FileReader();
+
+            reader.onloadend = function () {
+                previaImg.src = reader.result;
+            };
+
+            if(imgDados){
+                reader.readAsDataURL(imgDados);
+            }else{
+                previaImg.src = "Imagens/avatar/camisa.png";
+            }
+
+        });
+
+       
+
+
+    </script>
 
     <?php require_once("includes/admin/footer_admin.php"); ?>
