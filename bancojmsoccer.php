@@ -24,8 +24,8 @@ function insereCamiseta($camiseta) {
 
     $conexao = (new Conexao())->getConexao();
 
-    $query = "insert into produtos (nome, modelo, cor, preco, cat_camiseta_id) values 
-						('{$camiseta->nome}','{$camiseta->modelo}', '{$camiseta->cor}', '{$camiseta->preco}', '{$camiseta->cat}')";
+    $query = "insert into produtos (nome, modelo, cor, preco, cat_camiseta_id, img) values 
+						('{$camiseta->nome}','{$camiseta->modelo}', '{$camiseta->cor}', '{$camiseta->preco}', '{$camiseta->cat}', '{$camiseta->img}')";
 
     $resultado = mysqli_query($conexao, $query);
     return $resultado;

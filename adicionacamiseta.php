@@ -13,6 +13,7 @@
         <div class="banner">
             <?php require_once("bancojmsoccer.php") ?>
             <?php require_once("camiseta.php") ?>
+            <?php require_once("helper/UploadImg.php") ?>
 
             <?php
                 $camiseta = new camiseta();
@@ -21,6 +22,17 @@
                 $camiseta->cor = $_POST["cor"];
                 $camiseta->preco = $_POST["preco"];
                 $camiseta->cat = $_POST["cat"];
+                $img = $_FILES['img'] && $_FILES['img']['name'] ? $_FILES['img'] : null;
+
+                if($img){
+                    
+                   $uploadImg = new UploadImg($img, 'Imagens/');
+
+                   $upSuccess = $uploadImg->getResultado();
+
+                   $camiseta->img = $upSuccess ? $img['name'] : null;
+
+                }
 
 //Chama o método-------------------------------------------------
                 if (insereCamiseta($camiseta)) {

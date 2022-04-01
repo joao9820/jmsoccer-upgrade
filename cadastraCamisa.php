@@ -32,7 +32,7 @@
 
 
             <div class="formulario">
-                <form action="adicionacamiseta.php" method="POST">
+                <form action="adicionacamiseta.php" method="POST" enctype="multipart/form-data">
                     <input type="text" name="nome" placeholder="Nome"></br></br>
                     <input type="text" name="modelo" placeholder="Modelo"></br></br>
                     <input type="text" name="cor" placeholder="Cor"></br></br>
