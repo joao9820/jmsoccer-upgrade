@@ -8,7 +8,7 @@
   $senha = $_POST['senha'];
 
   //Como não usa classes, a conexão encontra-se disponível apenas fora das funções, dentro do bancojmsoccer, portanto é necessário passar essa conexão
-  $usuario = validaLogin($login, $senha);
+  $usuario = validaLogin($login, $senha, false);
 
 	if(!$usuario){
 

@@ -183,6 +183,20 @@
     const btnFinalizarCompra = document.getElementById("btnFinalizarCompra");
 
     btnFinalizarCompra.addEventListener("click", function() {
+
+        const usuarioLogado = '<?= isset($_SESSION['usuario_logado']) ?>';
+
+            if(!Boolean(usuarioLogado)){
+
+                alert("Para finalizar a compra é necessário estar logado, se não possuir login, cadastra-se");
+
+                const loginInput = document.getElementById('login');
+
+                loginInput.focus();
+
+                return;
+            }
+
         $("#finalizarCompra").show();
         $(this).addClass("disabled");
     });
