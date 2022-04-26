@@ -1,19 +1,8 @@
-<html>
+<?php require_once("includes/admin/header_admin.php"); 	require_once "logica-usuario.php";?>
 
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-    <link rel="stylesheet" type="text/css" href="cssprojeto.css">
-
-</head>
-
-<body>
-    <section class="corpo">
-
-        <div class="banner">
-            <?php require_once("bancojmsoccer.php") ?>
-            <?php require_once("camiseta.php") ?>
-            <?php require_once("helper/UploadImg.php") ?>
+<?php require_once("bancojmsoccer.php") ?>
+<?php require_once("camiseta.php") ?>
+<?php require_once("helper/UploadImg.php") ?>
 
             <?php
                 $camiseta = new camiseta();
@@ -67,34 +56,9 @@
             </div>
 
             <?php
-                } else {
-                    ?>
-            <h1 class="titulos" style="color: #212121">
-                Não Cadastrado!
-            </h1>
-            <h2 class="subtitulos" style="color: silver">
-                Camisa nao cadastrada
-            </h2>
-            <h3 class="subtitulos2">
-                Erro ao cadastrar
-            </h3>
-
-            <?php
-                    echo mysqli_error($conexao);
                 }
                 //--------------------------------------------------------------
                 ?>
-
-            <a class="link" href="camisetalista.php"> Mostrar Lista Completa</a>
-            <form class="localiza" method="post" action="localizacamisetarecebe.php?a=buscar">
-                <input type="text" name="time" />
-                <input type="submit" value="Buscar" />
-            </form></a>
         </div>
 
-
-
-    </section>
-</body>
-
-</html>
+        <?php require_once("includes/admin/footer_admin.php"); ?>

@@ -1,5 +1,6 @@
 
-<?php require_once("includes/loja/header_loja.php"); ?>
+<?php require_once("includes/loja/header_loja.php");
+?>
 
 <style>
 
@@ -28,56 +29,66 @@
       <form class="col" action="cadastroUsuarioValida.php" method="POST">
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="inputEmail4">Usuário</label>
-                    <input type="text" class="form-control" name="usuario" placeholder="Usuário">
+                    <label for="inputUser">Usuário</label>
+                    <input type="text" class="form-control" name="usuario" id="inputUser" placeholder="Usuário">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="inputAddress">Senha</label>
-                    <input type="password" class="form-control" name="senha" placeholder="Senha">
+                    <label for="inputPass">Senha</label>
+                    <input type="password" class="form-control" name="senha" id="inputPass" placeholder="Senha">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-8">
-                    <label for="inputEmail4">Nome</label>
-                    <input type="text" name="nome" class="form-control" placeholder="Nome">
+                    <label for="inputName">Nome</label>
+                    <input type="text" name="nome" id="inputName" class="form-control" placeholder="Nome">
                 </div>
                 <div class="form-group col-md-4">
-                    <label for="inputAddress">CPF</label>
-                    <input type="text" name="cpf" class="form-control" placeholder="CPF">
+                    <label for="inputCPF">CPF</label>
+                    <input type="text" name="cpf" id="inputCPF" class="form-control" placeholder="CPF">
                 </div>
             </div>
 						<div class="form-row">
-							<div class="form-group col-md-6">
-									<label for="inputAddress">Endereço de cobrança</label>
-									<input type="text" name="endereco" class="form-control" placeholder="Endereço">
-							</div>
+                <div class="form-group col-md-4">
+                    <label for="inputCEP">CEP</label>
+                    <input type="text" name="cep" id="inputCEP" class="form-control">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputUF">UF</label>
+                    <input type="text" name="uf" id="inputUF" class="form-control" placeholder="UF" readonly>
+                </div>
 							<div class="form-group col-md-6">
 									<label for="inputCity">Cidade</label>
-										<input type="text" name="cidade" class="form-control">
+										<input type="text" name="cidade" id="inputCity" class="form-control" placeholder="Cidade" readonly>
 								</div>
 						</div>
             <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label for="inputCEP">CEP</label>
-                    <input type="text" name="cep" class="form-control" >
+              <div class="form-group col-md-8">
+									<label for="inputBairro">Bairro</label>
+									<input type="text" name="bairro" id="inputBairro" class="form-control" placeholder="Bairro" readonly>
+							</div>
+              <div class="form-group col-md-4">
+									<label for="inputAddress">Endereço de cobrança</label>
+									<input type="text" name="endereco" id="inputAddress" class="form-control" placeholder="Endereço" readonly>
+							</div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-2">
+									<label for="inputNumber">Número</label>
+									<input type="text" name="numero" id="inputNumber" class="form-control" placeholder="Número">
+							</div>
+								<div class="form-group col-5">
+                    <label for="inputPhone">Telefone</label>
+                    <input type="text" name="telefone" id="inputPhone" class="form-control" placeholder="(51) 95266-3320">
                 </div>
-                <div class="form-group col-md-2">
-                    <label for="inputCEP">UF</label>
-                    <input type="text" name="uf" class="form-control" >
-                </div>
-								<div class="form-group col-6">
-                    <label for="inputAddress">Telefone</label>
-                    <input type="text" name="telefone" class="form-control" placeholder="(51) 95266-3320">
+                <div class="form-group col-5">
+                    <label for="inputMsg">Recado</label>
+                    <input type="text" name="recado" id="inputMsg" class="form-control" placeholder="(51) 95266-3320">
                 </div>
             </div>
 						<div class="form-row">
-							<div class="form-group col-4">
-                    <label for="inputAddress">Recado</label>
-                    <input type="text" name="recado" class="form-control" placeholder="(51) 95266-3320">
-                </div>
-							<div class="form-group col-8">
-									<label for="inputAddress">E-mail</label>
-									<input type="email" name="email" class="form-control" placeholder="E-mail">
+							<div class="form-group col-12">
+									<label for="inputEmail">E-mail</label>
+									<input type="email" name="email" id="inputEmail" class="form-control" placeholder="E-mail">
 							</div>
 						</div>
             <br>
@@ -112,9 +123,45 @@
 	//var_dump($usuario);
 	//die();
  
- $status = inserirUsuario($usuario);
+ $status = inserirUsuario($usuario, isset($_SESSION['usuario_logado']['id']) ? $_SESSION['usuario_logado']['id'] : null);
 	
 }	
 ?>
+
+<script>
+
+  window.onload = function(){
+    $("#inputCEP").blur(function(){
+			//Início do Comando AJAX
+			$.ajax({
+				//O campo URL diz o caminho de onde virá os dados
+				//É importante concatenar o valor digitado no CEP
+				url: 'https://viacep.com.br/ws/'+$(this).val()+'/json/',
+				//Aqui você deve preencher o tipo de dados que será lido,
+				//no caso, estamos lendo JSON.
+				dataType: 'json',
+        crossDomain: true,
+				success: function(resposta){
+					//Agora basta definir os valores que você deseja preencher
+          $("#inputUF").val(resposta.uf);
+          $("#inputCity").val(resposta.localidade);
+          $("#inputBairro").val(resposta.bairro);
+          $("#inputAddress").val(resposta.logradouro);
+				},
+        error: function() {
+
+          $("#inputUF").val('');
+          $("#inputCity").val('');
+          $("#inputBairro").val('');
+          $("#inputAddress").val('');
+          
+          alert('CEP inválido');
+        }
+
+			});
+		});
+  }
+
+</script>
 
 <?php require_once('includes/loja/footer_loja.php') ?>

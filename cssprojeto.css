@@ -94,7 +94,6 @@ div{
 
 .banner{
     /*border: 1px solid pink;*/
-    float: left;
     padding: 50px 70px;
     width: 1200px;
     box-sizing: border-box;
@@ -107,7 +106,6 @@ div{
     right: 50px;
 }
 .titulos{
-    float: left;
     color: white;
     /*border: 1px solid pink;*/
     font-weight: 900;
@@ -116,7 +114,6 @@ div{
     width: 100%;
 }
 .subtitulos{
-    float: left;
     color: silver;
     margin: 0;
     margin-top: -15px;
@@ -127,7 +124,6 @@ div{
     width: 100%;
 }
 .subtitulos2{
-    float: left;
     color: silver;
     margin: 0;
     /*border: 1px solid pink;*/
@@ -170,7 +166,7 @@ button{
     top: 50px;
     right: 50px;
 }
-.formulario input, .formulario select{
+.formulario input:not([type=reset]), .formulario select{
     height:50px;
     margin: 0;
     width: 400px;
@@ -184,13 +180,13 @@ button{
 }
 
 .formulario input[type = 'Submit'],input[type = 'reset']{
-    background: black;
+    /* background: black; */
     width: 150px;
     margin: 10px;
     float: right;
     padding: 0 10px;
     box-sizing: border-box;
-    color:red
+    /* color:red */
 }
 
 .link{

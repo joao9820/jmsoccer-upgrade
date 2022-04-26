@@ -30,6 +30,12 @@
                 Formulario para cadastro de camisas
             </h3>
 
+            <div class="my-4">
+                <a href="index.php" class="btn btn-outline-secondary">PÁGINA INICIAL</a>
+                <a href="camisetalista.php" class="btn btn-outline-info mx-3">LISTAR CAMISAS</a>
+                <a class="btn btn-outline-danger" href="logout.php">DESLOGAR</a>
+            </div>
+
 
             <div class="formulario">
                 <form action="adicionacamiseta.php" method="POST" enctype="multipart/form-data">
@@ -53,8 +59,8 @@
                    <div class="d-flex justify-content-between">
                     <!-- <a class="btn btn-dark" href="camisetalista.php">listar camisas</a><span
                             class="sr-only">(current)</span></a> -->
-                        <input type="reset" value="Limpar" class="btn btn-danger mr-2">
-                        <input type="submit" value="Cadastrar" class="btn bg-success text-light">
+                        <input type="reset" value="LIMPAR" class="btn btn-danger mr-2">
+                        <input type="submit" value="CADASTRAR" class="btn bg-success text-light">
                    </div>
 
                     <button class="navbar-toggler" type="button" data-toggle="collapse"

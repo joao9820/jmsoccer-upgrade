@@ -10,6 +10,8 @@
     public $endereco;
     public $cidade;
     public $cep;
+    public $bairro;
+    public $numero;
     public $uf;
     public $telefone;
     public $recado;

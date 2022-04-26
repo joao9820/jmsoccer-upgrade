@@ -1,6 +1,18 @@
 <?php require_once("includes/loja/header_loja.php"); ?>
 <?php require_once("bancojmsoccer.php"); ?>
-<?php $camisas = listarCarrinho(); ?>
+<?php $camisas = listarCarrinho(); 
+
+$isClient = false;
+
+if(isset($_SESSION['usuario_logado']['id'])){
+    $clienteDados = listarCliente($_SESSION['usuario_logado']['id']);
+
+    if($clienteDados){
+        $isClient = true;
+    }
+}
+
+?>
 
 <style>
     .valor-total-item {
@@ -39,76 +51,88 @@
 
 <div class="container pb-3">
     <div class="row" id="finalizarCompra">
-        <h4 class="w-100 text-center my-3">Finalizar Compra</h4>
-        <form class="col" action="" method="POST">
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="inputEmail4">Nome do Titular</label>
-                    <input type="text" class="form-control" id="inputEmail4" placeholder="Nome do titular">
+        <?php if(isset($clienteDados) && $clienteDados) : ?>
+            <h4 class="w-100 text-center my-3">Finalizar Compra</h4>
+            <form class="col" action="" method="POST">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputEmail4">Nome do Titular</label>
+                        <input type="text" value="<?= $clienteDados['nome'] ?>" class="form-control" id="inputEmail4" placeholder="Nome do titular">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputAddress">CPF</label>
+                        <input type="text" value="<?= $clienteDados['cpf'] ?>" class="form-control" id="inputAddress" placeholder="CPF">
+                    </div>
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="inputAddress">CPF</label>
-                    <input type="text" class="form-control" id="inputAddress" placeholder="CPF">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="inputCEP">CEP</label>
+                        <input type="text" value="<?= $clienteDados['cep'] ?>" class="form-control" id="inputCEP">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputCEP">UF</label>
+                        <input type="text" value="<?= $clienteDados['uf'] ?>" class="form-control" id="inputCEP">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputCity">Cidade</label>
+                        <input type="text" value="<?= $clienteDados['cidade'] ?>" class="form-control" id="inputCity">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="inputAddress">Endereço de cobrança</label>
-                <input type="text" class="form-control" id="inputAddress" placeholder="Endereço">
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="inputCity">Cidade</label>
-                    <input type="text" class="form-control" id="inputCity">
+                <div class="form-row">
+                    <div class="form-group col-4">
+                        <label for="inputAddress">Endereço de cobrança</label>
+                        <input type="text" value="<?= $clienteDados['endereco'] ?>" class="form-control" id="inputAddress" placeholder="Endereço">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputNumero">Número</label>
+                        <input type="text" value="<?= $clienteDados['numero'] ?>" class="form-control" id="inputNumero" placeholder="Número">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputBairro">Bairro</label>
+                        <input type="text" value="<?= $clienteDados['bairro'] ?>" class="form-control" id="inputBairro" placeholder="Bairro">
+                    </div>
                 </div>
-                <div class="form-group col-md-4">
-                    <label for="inputCEP">CEP</label>
-                    <input type="text" class="form-control" id="inputCEP">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputCity">Número do Cartão</label>
+                        <input type="text" class="form-control" id="inputCity">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputPassword4">Bandeira</label>
+                        <select id="inputEstado" class="form-control">
+                            <option selected>Escolher...</option>
+                            <option>Visa</option>
+                            <option>MasterCard</option>
+                            <option>Elo</option>
+                            <option>Alelo</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputCEP">Validade (XX/XX)</label>
+                        <input type="text" class="form-control" id="inputCEP">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputCEP">CVV</label>
+                        <input type="text" class="form-control" id="inputCEP">
+                    </div>
                 </div>
-                <div class="form-group col-md-2">
-                    <label for="inputCEP">UF</label>
-                    <input type="text" class="form-control" id="inputCEP">
+                <div class="form-row">
+                    <div class="form-group col-4">
+                        <label for="inputAddress">Telefone</label>
+                        <input type="text" value="<?= $clienteDados['telefone'] ?>" class="form-control" id="inputAddress" placeholder="(51) 95266-3320">
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="inputAddress">Recado</label>
+                        <input type="text" value="<?= $clienteDados['recado'] ?>" class="form-control" id="inputAddress" placeholder="(51) 5261-0021">
+                    </div>
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="inputCity">Número do Cartão</label>
-                    <input type="text" class="form-control" id="inputCity">
+                <br>
+                <div class="d-flex justify-content-end">
+                    <button type="reset" class="btn btn-outline-danger mr-2">Limpar</button>
+                    <button type="submit" class="btn btn-success">Processar Pagamento</button>
                 </div>
-                <div class="form-group col-md-2">
-                    <label for="inputPassword4">Bandeira</label>
-                    <select id="inputEstado" class="form-control">
-                        <option selected>Escolher...</option>
-                        <option>Visa</option>
-                        <option>MasterCard</option>
-                        <option>Elo</option>
-                        <option>Alelo</option>
-                    </select>
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="inputCEP">Validade (XX/XX)</label>
-                    <input type="text" class="form-control" id="inputCEP">
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="inputCEP">CVV</label>
-                    <input type="text" class="form-control" id="inputCEP">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-4">
-                    <label for="inputAddress">Telefone</label>
-                    <input type="text" class="form-control" id="inputAddress" placeholder="(51) 95266-3320">
-                </div>
-                <div class="form-group col-4">
-                    <label for="inputAddress">Recado</label>
-                    <input type="text" class="form-control" id="inputAddress" placeholder="(51) 5261-0021">
-                </div>
-            </div>
-            <br>
-            <div class="d-flex justify-content-end">
-                <button type="reset" class="btn btn-outline-danger mr-2">Limpar</button>
-                <button type="submit" class="btn btn-success">Processar Pagamento</button>
-            </div>
-        </form>
+            </form>
+        <?php endif; ?>
     </div>
     
     <div class="row">
@@ -185,10 +209,11 @@
     btnFinalizarCompra.addEventListener("click", function() {
 
         const usuarioLogado = '<?= isset($_SESSION['usuario_logado']) ?>';
+        const isClient = '<?= $isClient ?>';
 
-            if(!Boolean(usuarioLogado)){
+            if(!Boolean(usuarioLogado) || !Boolean(isClient)){
 
-                alert("Para finalizar a compra é necessário estar logado, se não possuir login, cadastra-se");
+                alert("Para finalizar a compra é necessário estar logado e possuir o perfil cliente, se não possuir login, cadastre-se");
 
                 const loginInput = document.getElementById('login');
 

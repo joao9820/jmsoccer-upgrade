@@ -25,7 +25,24 @@ function validaLogin($usuario, $senha, $is_admin)
     return $login;
 }
 
-function inserirUsuario(Usuario $usuario)
+function listarCliente($id){
+
+    $conexao = (new Conexao())->getConexao();
+
+    $sql = "SELECT clientes.id, clientes.nome, clientes.cpf, contatos.telefone, contatos.recado, contatos.email,
+    endereco.endereco, endereco.cidade, endereco.bairro, endereco.numero, endereco.cep, endereco.uf
+    FROM clientes INNER JOIN contatos ON contatos.cliente_id = clientes.id
+    INNER JOIN endereco ON endereco.cliente_id = clientes.id WHERE clientes.login_id = '{$id}'";
+
+    $resultado = mysqli_query($conexao, $sql);
+
+    $cliente = mysqli_fetch_assoc($resultado);
+
+    return $cliente;
+
+}
+
+function inserirUsuario(Usuario $usuario, $id = null)
 {
 
     $conexao = (new Conexao())->getConexao();
@@ -34,11 +51,14 @@ function inserirUsuario(Usuario $usuario)
 
     try {
 
-        $sqlLogin = "INSERT INTO login (usuario, senha) VALUES ('{$usuario->usuario}', '{$usuario->senha}')";
+        if(!$id){
+            
+            $sqlLogin = "INSERT INTO login (usuario, senha) VALUES ('{$usuario->usuario}', '{$usuario->senha}')";
 
-        $resultadoLogin = mysqli_query($conexao, $sqlLogin);
+            $resultadoLogin = mysqli_query($conexao, $sqlLogin);
 
-        $id = mysqli_insert_id($conexao);
+            $id = mysqli_insert_id($conexao);
+        }
 
         $sqlCliente = "INSERT INTO clientes(login_id, nome, cpf) VALUES ('{$id}','{$usuario->nome}', '{$usuario->cpf}')";
 
@@ -46,8 +66,8 @@ function inserirUsuario(Usuario $usuario)
 
         $clienteId = mysqli_insert_id($conexao);
 
-        $sqlEndereco = "INSERT INTO endereco(cliente_id, endereco, cidade, cep, uf) 
-           VALUES ('{$clienteId}', '{$usuario->endereco}', '{$usuario->cidade}', '{$usuario->cep}', '{$usuario->uf}')";
+        $sqlEndereco = "INSERT INTO endereco(cliente_id, endereco, cidade, bairro, numero, cep, uf) 
+           VALUES ('{$clienteId}', '{$usuario->endereco}', '{$usuario->cidade}', '{$usuario->bairro}', '{$usuario->numero}', '{$usuario->cep}', '{$usuario->uf}')";
 
         $resultadoEndereco = mysqli_query($conexao, $sqlEndereco);
 
@@ -63,6 +83,8 @@ function inserirUsuario(Usuario $usuario)
         /* var_dump($resultadoLogin, $resultadoCliente, $resultadoEndereco, $resultadoContato);
             die(); */
         mysqli_commit($conexao);
+
+        $msg = $id ? "Usuário atualizado com sucesso, perfil cliente adicionado" : "Usuário cadastrado com sucesso, realize o login para realizar compras";
 
         $_SESSION['alert'] = [
             "status" => true,
@@ -110,7 +132,29 @@ function insereCamiseta($camiseta)
 						('{$camiseta->nome}','{$camiseta->modelo}', '{$camiseta->cor}', '{$camiseta->preco}', '{$camiseta->cat}', '{$camiseta->img}')";
 
     $resultado = mysqli_query($conexao, $query);
-    return $resultado;
+
+    if($resultado){
+        $_SESSION['alert'] = [
+            "status" => true,
+            "title" => "STATUS DO CADASTRO",
+            "desc" =>  "Camisa cadastrada com sucesso",
+            "voltar_link" => 'camisetalista.php',
+            "voltar_title" => 'Listar Camisas'
+        ];
+    }else{
+        $_SESSION['alert'] = [
+            "status" => false,
+            "title" => "STATUS DO CADASTRO",
+            "desc" =>  "Erro ao cadastrar camisa",
+            "voltar_link" => 'cadastraCamisa.php',
+            "voltar_title" => 'Cadastrar Camisas'
+        ];
+    }
+
+    header('Location:alerta.php');
+    exit();
+
+    //return $resultado;
 }
 
 function alteracamiseta($idcamiseta, $time, $modelo, $cor, $valor, $cat)
@@ -192,9 +236,8 @@ function listacamiseta()
 
     $conexao = (new Conexao())->getConexao();
 
-    echo "<center><h1 class='p-3'>Camisas</h1></center>";
     $sql = "select produtos.id, produtos.nome, produtos.modelo, produtos.cor, produtos.preco, cat_camisetas.nome as categoria_nome FROM produtos 
-    left join cat_camisetas ON cat_camisetas.id = produtos.cat_camiseta_id";
+    left join cat_camisetas ON cat_camisetas.id = produtos.cat_camiseta_id ORDER BY produtos.id DESC";
 
 
     $resultado = mysqli_query($conexao, $sql);

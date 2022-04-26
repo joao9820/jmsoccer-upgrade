@@ -1,5 +1,5 @@
-<?php require_once("includes/admin/header_admin.php"); ?>
-
+<?php require_once("includes/admin/header_admin.php"); 
+?>
 <style>
 
   .box-login {

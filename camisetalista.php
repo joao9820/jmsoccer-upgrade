@@ -11,6 +11,12 @@
 
   <div class="container">
         <div class="row">
+          <div class="d-flex w-100 align-items-center py-3">
+              <a href="cadastraCamisa.php" class="btn btn-outline-secondary rounded-circle p-2">
+                <i class="fas fa-arrow-left" style="width: 1em;"></i>
+              </a>
+              <h1 class='ml-4 mb-0'>Camisas</h1>
+          </div>
             <table class="table table-striped">
                 <thead>
                     <tr>
