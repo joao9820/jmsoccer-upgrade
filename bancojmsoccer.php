@@ -5,6 +5,52 @@
 <?php
 
 
+function realizarPedido($clienteId){
+
+
+    $conexao = (new Conexao())->getConexao();
+
+    mysqli_begin_transaction($conexao);
+
+    try {
+
+        $sqlPedido = "INSERT INTO pedidos (cliente_id) VALUES ($clienteId)";
+
+        $resultadoPedido = mysqli_query($conexao, $sqlPedido);
+
+        $pedidoId = mysqli_insert_id($conexao);
+
+        $carrinho = listarCarrinho();
+
+        if(!$carrinho){
+            throw new Exception('Não foi possível realizar o pedido, os produtos não foram encontrados');
+        }
+
+        $sqlPedidoProdutos = "INSERT INTO pedido_produtos VALUES ";
+
+        foreach($carrinho as $prod){
+
+            $sqlPedidoProdutos .= "('{$pedidoId}', '{$prod->id}', '{$prod->quantidade}') ";
+
+        }
+
+        var_dump($sqlPedidoProdutos);
+        die();
+        
+        mysqli_commit($conexao);
+
+        if(!$resultadoPedido){
+            throw new Exception('Não foi possível realizar o pedido');
+        }
+
+    } catch (\Exception $e) {
+
+        mysqli_rollback($conexao);
+        
+    }
+
+}
+
 function validaLogin($usuario, $senha, $is_admin)
 {
 
@@ -199,6 +245,7 @@ function listarCarrinho()
     }
 
     return $camisas;
+
 }
 
 function listarProdutos($cat)
