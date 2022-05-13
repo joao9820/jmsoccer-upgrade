@@ -43,7 +43,7 @@
                 </div>
                 <div class="d-flex">
                         <form action="validaLogin.php" method="POST" class="form-inline my-2 my-lg-0">
-                            <a button class="btn btn-success" type="button" href="<?= isset($_SESSION["usuario_logado"]) ? 'cadastraCamisa.php' : 'adm.php' ?>"><i class="fas fa-user mr-2"></i>Administrador</a>
+                            <a button class="btn btn-success" type="button" href="<?= isset($_SESSION["usuario_logado"]) && $_SESSION['usuario_logado']['is_admin'] ? 'cadastraCamisa.php' : 'adm.php' ?>"><i class="fas fa-user mr-2"></i>Administrador</a>
                         </form>
                     </div>
             </div>
