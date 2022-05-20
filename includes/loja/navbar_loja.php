@@ -52,9 +52,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="carrinho.php">Carrinho</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Histórico</a>
-                        </li>
+                        <?php if(isset($_SESSION['usuario_logado']) && !$_SESSION['usuario_logado']['is_admin']) : ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="pedidos.php">Pedidos</a>
+                            </li>
+                        <?php endif ?>
                     </ul>
                 </div>
                 <div class="d-flex align-items-center">

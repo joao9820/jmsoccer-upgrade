@@ -182,6 +182,9 @@ require_once("bancojmsoccer.php");
             notifyCarrinho.style.opacity = 1;
            notifyCarrinho.textContent = (JSON.parse(getCookie("carrinho")).length);
 
+           //Redireciona para mostrar que a ação foi realizada
+           window.location.href = "carrinho.php";
+
         }   
 
     </script>

@@ -4,53 +4,6 @@
 
 <?php
 
-
-function realizarPedido($clienteId){
-
-
-    $conexao = (new Conexao())->getConexao();
-
-    mysqli_begin_transaction($conexao);
-
-    try {
-
-        $sqlPedido = "INSERT INTO pedidos (cliente_id) VALUES ($clienteId)";
-
-        $resultadoPedido = mysqli_query($conexao, $sqlPedido);
-
-        $pedidoId = mysqli_insert_id($conexao);
-
-        $carrinho = listarCarrinho();
-
-        if(!$carrinho){
-            throw new Exception('Não foi possível realizar o pedido, os produtos não foram encontrados');
-        }
-
-        $sqlPedidoProdutos = "INSERT INTO pedido_produtos VALUES ";
-
-        foreach($carrinho as $prod){
-
-            $sqlPedidoProdutos .= "('{$pedidoId}', '{$prod->id}', '{$prod->quantidade}') ";
-
-        }
-
-        var_dump($sqlPedidoProdutos);
-        die();
-        
-        mysqli_commit($conexao);
-
-        if(!$resultadoPedido){
-            throw new Exception('Não foi possível realizar o pedido');
-        }
-
-    } catch (\Exception $e) {
-
-        mysqli_rollback($conexao);
-        
-    }
-
-}
-
 function validaLogin($usuario, $senha, $is_admin)
 {
 
@@ -58,7 +11,9 @@ function validaLogin($usuario, $senha, $is_admin)
     $conexao = (new Conexao())->getConexao();
 
     $usuario2 = mysqli_real_escape_string($conexao, $usuario);
-    $sql = "select id, is_admin, usuario from login where usuario='{$usuario2}' and senha = MD5('$senha')";
+    $sql = "select login.id, login.is_admin, login.usuario, clientes.id as cliente_id from login 
+    left join clientes ON clientes.login_id = login.id
+    where login.usuario='{$usuario2}' and login.senha = MD5('$senha')";
 
     if ($is_admin) {
         $sql .= " and is_admin = 1";
@@ -290,64 +245,106 @@ function listacamiseta()
     $resultado = mysqli_query($conexao, $sql);
 
     return $resultado;
-
-
-    while ($array = mysqli_fetch_assoc($resultado)) {
-?>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <center>
-            <form action=alteraForm.php method=GET>
-                <table>
-                    <tr>
-
-                        <td><input type="hidden" value="<?php echo $array['id']; ?>" name="idcamiseta"> </td>
-                    </tr>
-                    <tr>
-                        <td>Time </td>
-                        <td> <input type="text" value="<?php echo $array['nome']; ?>" name="time"> </td>
-                    </tr>
-                    <tr>
-                        <td>Modelo</td>
-                        <td> <input type="text" value="<?php echo $array['modelo']; ?>" name="modelo"> </td>
-                    </tr>
-                    <tr>
-                        <td>Cor </td>
-                        <td> <input type="text" value="<?php echo $array['cor']; ?>" name="cor"> </td>
-                    </tr>
-                    <tr>
-                        <td>Valor</td>
-                        <td> <input type="text" value="<?php echo $array['preco']; ?>" name="valor"> </td>
-                    </tr>
-                    <!-- <tr>
-                        <td>Prazo </td>
-                        <td> <input type="text" value="<?php echo $array['prazo']; ?>" name="prazo"> </td>
-                    </tr> -->
-                    <tr>
-                        <td colspan="2"><input type="submit" value="Alterar" class="btn btn-warning"></td>
-
-                    </tr>
-            </form>
-            <form action="removecamiseta.php" method="post">
-
-                <table>
-                    <tr>
-                        <td><input type=hidden value=<?php echo $array['id']; ?> name=idcamiseta>
-                        <td> <button type="hidden" class="btn btn-dark">Remover</button></td>
-                    </tr>
-                </table>
-
-            </form>
-        </center>
-<?php
-    }
-
-    //-----------------------------------------------------------------------------------------
-
-
-    function localizarcamiseta($conexao)
-    {
-
-        echo "<center><h1> Dados</h1></center>";
-    }
+    
 }
+
+function localizarcamiseta($conexao)
+{
+
+    echo "<center><h1> Dados</h1></center>";
+}
+
+
+function realizarPedido($clienteId){
+
+    $conexao = (new Conexao())->getConexao();
+
+    mysqli_begin_transaction($conexao);
+
+    try {
+
+        $sqlPedido = "INSERT INTO pedidos (cliente_id) VALUES ('$clienteId')";
+
+        $resultadoPedido = mysqli_query($conexao, $sqlPedido);
+
+        $pedidoId = mysqli_insert_id($conexao);
+
+        $carrinho = listarCarrinho();
+
+        if(!$carrinho){
+            throw new Exception('Não foi possível realizar o pedido, os produtos não foram encontrados');
+        }
+
+        $sqlPedidoProdutos = "INSERT INTO pedido_produtos(pedido_id, produto_id, tamanho, quantidade) VALUES ";
+
+        foreach($carrinho as $key => $prod){
+
+            if($key > 0)
+                $sqlPedidoProdutos .= ", ";
+
+            $sqlPedidoProdutos .= "('{$pedidoId}', '{$prod->id}', '{$prod->tamanho}' ,'{$prod->quantidade}')";
+
+        }
+        
+        $resultadoPedidoProdutos = mysqli_query($conexao, $sqlPedidoProdutos);
+
+        if(!$resultadoPedido || !$resultadoPedidoProdutos){
+            throw new Exception('Não foi possível realizar o pedido');
+        }
+        
+        mysqli_commit($conexao);
+
+        unset($_COOKIE['carrinho']);
+        setcookie('carrinho', null, -1, '/');
+
+        $_SESSION['alert'] = [
+            "status" => true,
+            "title" => "STATUS DO PEDIDO",
+            "desc" =>  "Pedido realizado com sucesso, acompanhe a situação na página de pedidos",
+            "voltar_link" => 'loja.php', //colocar a pág. de pedidos
+            "voltar_title" => 'Voltar a Loja'
+        ];
+
+    } catch (\Exception $e) {
+
+        mysqli_rollback($conexao);
+
+        $_SESSION['alert'] = [
+            "status" => false,
+            "title" => "STATUS DO PEDIDO",
+            "desc" =>  "Houve um erro ao realizar o pedido, tente novamente",
+            "voltar_link" => 'loja.php', //colocar a pág. de pedidos
+            "voltar_title" => 'Voltar a Loja'
+        ];
+        
+    }
+
+    header('Location:alerta.php');
+    exit();
+
+}
+
+ function listarPedidos($clienteId){
+
+    $conexao = (new Conexao())->getConexao();
+
+    $sql = "SELECT pedidos.id, pedidos.created_at, pedidos.updated_at, status.nome as status_nome, status.cor_bs as status_cor, COUNT(*) AS qtd_produtos 
+    FROM pedidos LEFT JOIN clientes ON clientes.id = pedidos.cliente_id 
+    LEFT JOIN status ON status.id = pedidos.status_id 
+    LEFT JOIN pedido_produtos ON pedido_produtos.pedido_id = pedidos.id 
+    GROUP BY pedidos.id";
+
+    $resultado = mysqli_query($conexao, $sql);
+
+    return $resultado;
+
+    /* $dados = [];
+
+    if($resultado)
+        $dados =  mysqli_fetch_assoc($resultado);
+
+    return $dados; */
+
+}
+
 ?>

@@ -1,6 +1,7 @@
-<?php require_once("includes/loja/header_loja.php"); ?>
-<?php require_once("bancojmsoccer.php"); ?>
-<?php $camisas = listarCarrinho(); 
+<?php require_once("includes/loja/header_loja.php"); 
+ require_once("bancojmsoccer.php"); ?>
+<?php $camisas = listarCarrinho();
+ob_start(); 
 
 $isClient = false;
 
@@ -11,9 +12,7 @@ if(isset($_SESSION['usuario_logado']['id'])){
         $isClient = true;
     }
 }
-
 ?>
-
 <style>
     .valor-total-item {
         /* background-color: #17a2b863; */
@@ -129,7 +128,7 @@ if(isset($_SESSION['usuario_logado']['id'])){
                 <br>
                 <div class="d-flex justify-content-end">
                     <button type="reset" class="btn btn-outline-danger mr-2">Limpar</button>
-                    <button type="submit" class="btn btn-success">Processar Pagamento</button>
+                    <button type="submit" name="processar" class="btn btn-success">Processar Pagamento</button>
                 </div>
             </form>
         <?php endif; ?>
@@ -141,7 +140,7 @@ if(isset($_SESSION['usuario_logado']['id'])){
             <table class="table table-striped" id="tableItens">
                 <thead>
                     <tr>
-                        <th scope="col">Cód Item</th>
+                        <th scope="col">Item</th>
                         <th scope="col">Produto</th>
                         <th scope="col">Tamanho</th>
                         <th scope="col">Valor Unit.</th>
@@ -154,7 +153,9 @@ if(isset($_SESSION['usuario_logado']['id'])){
                     <?php
                     $total = 0;
                     $qtdTotal = 0;
-                    foreach ($camisas as $item) : ?>
+                    foreach ($camisas as $item) : 
+                        /* var_dump($item); */
+                    ?>
                         <tr>
                             <th scope="row">
                                 <input type="hidden" value="<?= $item->cod ?>" />
@@ -201,6 +202,18 @@ if(isset($_SESSION['usuario_logado']['id'])){
 
     </div>
 </div>
+
+<?php 
+
+        if(isset($_POST['processar'])){
+
+            unset($_POST['processar']);
+
+            realizarPedido($_SESSION['usuario_logado']['cliente_id']);
+
+        }
+
+?>
 
 <script>
 
