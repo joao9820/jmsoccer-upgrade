@@ -30,45 +30,45 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="inputUser">Usuário</label>
-                    <input type="text" class="form-control" name="usuario" id="inputUser" placeholder="Usuário">
+                    <input required type="text" class="form-control" name="usuario" id="inputUser" placeholder="Usuário">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="inputPass">Senha</label>
-                    <input type="password" class="form-control" name="senha" id="inputPass" placeholder="Senha">
+                    <input required type="password" class="form-control" name="senha" id="inputPass" placeholder="Senha">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-8">
                     <label for="inputName">Nome</label>
-                    <input type="text" name="nome" id="inputName" class="form-control" placeholder="Nome">
+                    <input required type="text" name="nome" id="inputName" class="form-control" placeholder="Nome">
                 </div>
                 <div class="form-group col-md-4">
                     <label for="inputCPF">CPF</label>
-                    <input type="text" name="cpf" id="inputCPF" class="form-control" placeholder="CPF">
+                    <input required type="text" maxlength="11" name="cpf" id="inputCPF" class="form-control" placeholder="CPF">
                 </div>
             </div>
 						<div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="inputCEP">CEP</label>
-                    <input type="text" name="cep" id="inputCEP" class="form-control">
+                    <input required type="text" name="cep" id="inputCEP" class="form-control">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="inputUF">UF</label>
-                    <input type="text" name="uf" id="inputUF" class="form-control" placeholder="UF" readonly>
+                    <input required type="text" name="uf" id="inputUF" class="form-control" placeholder="UF" readonly>
                 </div>
 							<div class="form-group col-md-6">
 									<label for="inputCity">Cidade</label>
-										<input type="text" name="cidade" id="inputCity" class="form-control" placeholder="Cidade" readonly>
+										<input required type="text" name="cidade" id="inputCity" class="form-control" placeholder="Cidade" readonly>
 								</div>
 						</div>
             <div class="form-row">
               <div class="form-group col-md-8">
 									<label for="inputBairro">Bairro</label>
-									<input type="text" name="bairro" id="inputBairro" class="form-control" placeholder="Bairro" readonly>
+									<input required type="text" name="bairro" id="inputBairro" class="form-control" placeholder="Bairro" readonly>
 							</div>
               <div class="form-group col-md-4">
 									<label for="inputAddress">Endereço de cobrança</label>
-									<input type="text" name="endereco" id="inputAddress" class="form-control" placeholder="Endereço" readonly>
+									<input required type="text" name="endereco" id="inputAddress" class="form-control" placeholder="Endereço" readonly>
 							</div>
             </div>
             <div class="form-row">
@@ -131,36 +131,21 @@
 <script>
 
   window.onload = function(){
-    $("#inputCEP").blur(function(){
-			//Início do Comando AJAX
-			$.ajax({
-				//O campo URL diz o caminho de onde virá os dados
-				//É importante concatenar o valor digitado no CEP
-				url: 'https://viacep.com.br/ws/'+$(this).val()+'/json/',
-				//Aqui você deve preencher o tipo de dados que será lido,
-				//no caso, estamos lendo JSON.
-				dataType: 'json',
-        crossDomain: true,
-				success: function(resposta){
-					//Agora basta definir os valores que você deseja preencher
-          $("#inputUF").val(resposta.uf);
-          $("#inputCity").val(resposta.localidade);
-          $("#inputBairro").val(resposta.bairro);
-          $("#inputAddress").val(resposta.logradouro);
-				},
-        error: function() {
+    
+    getDadosCep();
 
-          $("#inputUF").val('');
-          $("#inputCity").val('');
-          $("#inputBairro").val('');
-          $("#inputAddress").val('');
-          
-          alert('CEP inválido');
-        }
+    const cpf = $("#inputCPF");
 
-			});
-		});
+    cpf.focusout((e) => {
+      
+      if(!validaCPF(e.target.value)) {
+          alert('CPF inválido, por favor, verifique e corrija o código informado');
+      }
+    });
+
   }
+
+  
 
 </script>
 

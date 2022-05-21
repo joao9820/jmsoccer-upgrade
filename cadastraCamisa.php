@@ -1,4 +1,6 @@
 <?php require_once("includes/admin/header_admin.php"); ?>
+<?php if(!isset($_SESSION['usuario_logado']) || !$_SESSION['usuario_logado']['is_admin']) header("Location:adm.php") ?>
+
 
 <style>
 

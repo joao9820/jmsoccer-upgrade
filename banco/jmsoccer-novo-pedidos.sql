@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 23-Abr-2022 às 04:44
+-- Tempo de geração: 21-Maio-2022 às 06:00
 -- Versão do servidor: 10.4.13-MariaDB
 -- versão do PHP: 7.4.7
 
@@ -92,7 +92,8 @@ INSERT INTO `clientes` (`id`, `login_id`, `nome`, `cpf`, `created_at`, `updated_
 (19, 36, 'Heloisa Helena', '83764639', '2022-04-02 02:31:57', '2022-04-02 02:31:57'),
 (20, 37, 'Maria Antonieta', '456456454', '2022-04-22 22:10:41', '2022-04-22 22:10:41'),
 (26, 43, 'João Victor Morgado Viana', '0000000000', '2022-04-23 02:20:20', '2022-04-23 02:20:20'),
-(29, 46, 'André Belle ', '8312746231', '2022-04-23 02:33:10', '2022-04-23 02:33:10');
+(29, 46, 'André Belle ', '8312746231', '2022-04-23 02:33:10', '2022-04-23 02:33:10'),
+(30, 47, 'teste', '12345678909', '2022-05-21 01:39:11', '2022-05-21 01:39:11');
 
 -- --------------------------------------------------------
 
@@ -118,7 +119,8 @@ INSERT INTO `contatos` (`id`, `cliente_id`, `telefone`, `recado`, `email`) VALUE
 (15, 19, '312879312', '3782317989', 'heloisa@gmail.com'),
 (16, 20, '(61) 998561381', '(61) 998561381', 'maria.antonieta@gmail.com'),
 (22, 26, '998561381', '998561381', 'joaovictor9238@gmail.com'),
-(25, 29, '124125135', '3124234123123', 'andre@gmail.com');
+(25, 29, '124125135', '3124234123123', 'andre@gmail.com'),
+(26, 30, '3192731012', '7831297391', 'teste@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -149,7 +151,8 @@ INSERT INTO `endereco` (`id`, `cliente_id`, `endereco`, `numero`, `bairro`, `cid
 (21, 19, 'dhf 213 hdhaf ', NULL, NULL, 'Baúru', '82378129', 'sp', '2022-04-02 02:31:57', '2022-04-02 02:31:57'),
 (22, 20, 'qne 132099 ', NULL, NULL, 'fasdofjaj', '72125-199', 'DF', '2022-04-22 22:10:41', '2022-04-22 22:10:41'),
 (28, 26, '21', NULL, 'Taguatinga Norte (Taguatinga)', 'Brasília', '72125300', 'DF', '2022-04-23 02:20:20', '2022-04-23 02:20:20'),
-(31, 29, 'QNE 30', 21, 'Taguatinga Norte (Taguatinga)', 'Brasília', '72125300', 'DF', '2022-04-23 02:33:10', '2022-04-23 02:33:10');
+(31, 29, 'QNE 30', 21, 'Taguatinga Norte (Taguatinga)', 'Brasília', '72125300', 'DF', '2022-04-23 02:33:10', '2022-04-23 02:33:10'),
+(32, 30, 'QNE 20', 21, 'Taguatinga Norte (Taguatinga)', 'Brasília', '72125-200', 'DF', '2022-05-21 01:39:11', '2022-05-21 01:39:11');
 
 -- --------------------------------------------------------
 
@@ -170,7 +173,7 @@ CREATE TABLE `login` (
 
 INSERT INTO `login` (`id`, `is_admin`, `usuario`, `senha`) VALUES
 (1, 0, 'junior', '12345'),
-(2, 0, 'joao', '202cb962ac59075b964b07152d234b70'),
+(2, 1, 'joao', '202cb962ac59075b964b07152d234b70'),
 (3, 0, 'joao1', '202cb962ac59075b964b07152d234b70'),
 (4, 0, 'cristiano', 'e10adc3949ba59abbe56e057f20f883e'),
 (5, 0, 'junior2', '81dc9bdb52d04dc20036dbd8313ed055'),
@@ -185,7 +188,88 @@ INSERT INTO `login` (`id`, `is_admin`, `usuario`, `senha`) VALUES
 (36, 0, 'Heloisa', 'e10adc3949ba59abbe56e057f20f883e'),
 (37, 0, 'maria.antonieta', '202cb962ac59075b964b07152d234b70'),
 (43, 0, 'joao9820', '202cb962ac59075b964b07152d234b70'),
-(46, 0, 'andre', '202cb962ac59075b964b07152d234b70');
+(46, 0, 'andre', '202cb962ac59075b964b07152d234b70'),
+(47, 0, 'teste', '202cb962ac59075b964b07152d234b70');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `pedidos`
+--
+
+CREATE TABLE `pedidos` (
+  `id` int(11) NOT NULL,
+  `cliente_id` int(11) NOT NULL,
+  `status_id` int(11) NOT NULL DEFAULT 3,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `pedidos`
+--
+
+INSERT INTO `pedidos` (`id`, `cliente_id`, `status_id`, `created_at`, `updated_at`) VALUES
+(6, 5, 4, '2022-05-20 00:22:35', '2022-05-20 00:22:35'),
+(7, 5, 1, '2022-05-20 01:19:06', '2022-05-20 01:19:06'),
+(8, 5, 3, '2022-05-20 01:20:27', '2022-05-20 01:20:27'),
+(9, 5, 3, '2022-05-20 01:21:43', '2022-05-20 01:21:43'),
+(10, 5, 3, '2022-05-20 01:25:50', '2022-05-20 01:25:50'),
+(11, 5, 3, '2022-05-21 01:32:15', '2022-05-21 01:32:15'),
+(12, 5, 3, '2022-05-21 01:33:24', '2022-05-21 01:33:24'),
+(13, 30, 3, '2022-05-21 02:16:18', '2022-05-21 02:16:18'),
+(14, 30, 3, '2022-05-21 02:48:36', '2022-05-21 02:48:36'),
+(15, 30, 3, '2022-05-21 02:49:06', '2022-05-21 02:49:06'),
+(16, 30, 3, '2022-05-21 02:50:30', '2022-05-21 02:50:30'),
+(17, 30, 3, '2022-05-21 02:51:05', '2022-05-21 02:51:05'),
+(18, 30, 3, '2022-05-21 02:51:37', '2022-05-21 02:51:37'),
+(19, 30, 3, '2022-05-21 02:52:01', '2022-05-21 02:52:01'),
+(20, 5, 3, '2022-05-21 03:57:49', '2022-05-21 03:57:49');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `pedido_produtos`
+--
+
+CREATE TABLE `pedido_produtos` (
+  `pedido_id` int(11) NOT NULL,
+  `produto_id` int(11) NOT NULL,
+  `tamanho` enum('P','M','G','GG') NOT NULL,
+  `quantidade` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `pedido_produtos`
+--
+
+INSERT INTO `pedido_produtos` (`pedido_id`, `produto_id`, `tamanho`, `quantidade`) VALUES
+(6, 1, 'P', 3),
+(6, 3, 'P', 1),
+(6, 2, 'P', 1),
+(6, 1, 'P', 1),
+(6, 4, 'G', 3),
+(6, 1, 'P', 2),
+(7, 3, 'P', 1),
+(7, 2, 'P', 1),
+(7, 1, 'P', 1),
+(8, 1, 'P', 1),
+(9, 10, 'P', 3),
+(10, 10, 'P', 3),
+(11, 1, 'P', 3),
+(11, 9, 'P', 5),
+(12, 10, 'P', 2),
+(13, 17, 'P', 3),
+(13, 10, 'P', 9),
+(14, 3, 'P', 6),
+(14, 17, 'P', 1),
+(15, 1, 'P', 1),
+(16, 9, 'P', 1),
+(17, 1, 'P', 1),
+(18, 10, 'P', 1),
+(19, 1, 'P', 1),
+(20, 1, 'P', 1),
+(20, 24, 'P', 1);
 
 -- --------------------------------------------------------
 
@@ -218,14 +302,36 @@ INSERT INTO `produtos` (`id`, `cat_camiseta_id`, `nome`, `tamanho`, `modelo`, `c
 (4, 2, 'Camisa Boca Jr', NULL, '2021/2022', 'Branca', NULL, '119.99', 'Camisa-Boca-Junior.jpg', '2022-03-17 23:20:00', '2022-03-17 23:20:00'),
 (5, 3, 'Camisa França', NULL, '2021/2022', 'Preta', NULL, '118.99', 'camisa frana.jpg', '2022-03-17 23:20:00', '2022-03-17 23:20:00'),
 (6, 2, 'Camisa Crystal Palace', NULL, '2021/2022', NULL, NULL, '199.99', 'crystalpalace-ak-1819-516x680-1-.png', '2022-03-17 23:16:11', '2022-03-17 23:16:11'),
-(7, 3, 'Camisa PSG', NULL, '2021/2022', '', NULL, '118.99', 'camisa paris.jpg', '2022-03-17 23:20:00', '2022-03-17 23:20:00'),
-(8, 2, 'Camisa Crystal Palace 2', NULL, '2021/2022', NULL, NULL, '248.99', 'crystalpalace-hk-1819-516x680-2-.png', '2022-03-17 23:27:23', '2022-03-17 23:27:23'),
 (9, 2, 'Camisa Man. City', NULL, 'Jogador nº 9', NULL, NULL, '248.99', 'mancity-hk-1819-516x680-2-.png', '2022-03-17 23:27:23', '2022-03-17 23:27:23'),
 (10, 2, 'Camisa Liverpool', NULL, 'Clássico', NULL, NULL, '248.99', 'myQlQcXp.png', '2022-03-17 23:16:11', '2022-03-17 23:16:11'),
 (13, NULL, 'Flamengo', NULL, 'FLA-2021', 'VERMELHO', NULL, '0.00', NULL, '2022-03-19 01:54:22', '2022-03-19 01:54:22'),
 (16, NULL, 'Corinthians', NULL, 'corinthians-2021', 'branca', NULL, '350.25', NULL, '2022-03-19 01:56:21', '2022-03-19 01:56:21'),
 (17, 1, 'São Paulo', NULL, '2021', 'Branca', NULL, '250.00', 'camisa-sao-paulo.jpg', '2022-03-19 02:38:17', '2022-03-19 02:38:17'),
 (24, 2, 'Flamengo', NULL, 'fds2', 'vermelha', NULL, '355.00', 'Camisa-Boca-Junior.jpg', '2022-04-22 23:42:24', '2022-04-22 23:42:24');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `status`
+--
+
+CREATE TABLE `status` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(100) NOT NULL,
+  `cor_bs` varchar(20) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `status`
+--
+
+INSERT INTO `status` (`id`, `nome`, `cor_bs`, `created_at`) VALUES
+(1, 'Aguardando Pagamento', 'secondary', '2022-05-12 23:49:15'),
+(2, 'Pagamento aprovado', 'primary', '2022-05-12 23:49:15'),
+(3, 'Preparando Entrega', 'warning', '2022-05-12 23:49:15'),
+(4, 'Pedido Entregue', 'success', '2022-05-12 23:49:15'),
+(5, 'Pedido Cancelado', 'danger', '2022-05-20 01:27:56');
 
 --
 -- Índices para tabelas despejadas
@@ -272,11 +378,25 @@ ALTER TABLE `login`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Índices para tabela `pedidos`
+--
+ALTER TABLE `pedidos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `pedidos_cliente_fk` (`cliente_id`),
+  ADD KEY `pedidos_status_fk` (`status_id`);
+
+--
 -- Índices para tabela `produtos`
 --
 ALTER TABLE `produtos`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_produtos_cat_camiseta_id` (`cat_camiseta_id`);
+
+--
+-- Índices para tabela `status`
+--
+ALTER TABLE `status`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT de tabelas despejadas
@@ -298,31 +418,43 @@ ALTER TABLE `cat_camisetas`
 -- AUTO_INCREMENT de tabela `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT de tabela `contatos`
 --
 ALTER TABLE `contatos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de tabela `endereco`
 --
 ALTER TABLE `endereco`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT de tabela `login`
 --
 ALTER TABLE `login`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+
+--
+-- AUTO_INCREMENT de tabela `pedidos`
+--
+ALTER TABLE `pedidos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de tabela `produtos`
 --
 ALTER TABLE `produtos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT de tabela `status`
+--
+ALTER TABLE `status`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Restrições para despejos de tabelas
@@ -345,6 +477,13 @@ ALTER TABLE `contatos`
 --
 ALTER TABLE `endereco`
   ADD CONSTRAINT `endereco_cliente_id_fk` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`);
+
+--
+-- Limitadores para a tabela `pedidos`
+--
+ALTER TABLE `pedidos`
+  ADD CONSTRAINT `pedidos_cliente_fk` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`),
+  ADD CONSTRAINT `pedidos_status_fk` FOREIGN KEY (`status_id`) REFERENCES `status` (`id`);
 
 --
 -- Limitadores para a tabela `produtos`

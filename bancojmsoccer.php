@@ -123,6 +123,60 @@ function inserirUsuario(Usuario $usuario, $id = null)
             echo $erro; 
             } */
 }
+function atualizarCliente(Usuario $usuario, $cliente_id)
+{
+
+    $conexao = (new Conexao())->getConexao();
+
+    mysqli_begin_transaction($conexao);
+
+    try {
+
+        $sqlCliente = "UPDATE clientes SET nome='{$usuario->nome}', cpf='{$usuario->cpf}' WHERE id = '{$cliente_id}'";
+
+        var_dump($sqlCliente);
+        
+
+        $resultadoCliente = mysqli_query($conexao, $sqlCliente);
+
+        $sqlEndereco = "UPDATE endereco SET endereco='{$usuario->endereco}', cidade='{$usuario->cidade}', bairro='{$usuario->bairro}', 
+        numero={$usuario->numero}, cep='{$usuario->cep}', uf='{$usuario->uf}' WHERE cliente_id = '{$cliente_id}'";
+
+        $resultadoEndereco = mysqli_query($conexao, $sqlEndereco);
+
+        $sqlContato = "UPDATE contatos SET telefone='{$usuario->telefone}', recado='{$usuario->recado}', email='{$usuario->email}'
+        WHERE cliente_id='{$cliente_id}'";
+
+        $resultadoContato = mysqli_query($conexao, $sqlContato);
+
+        if (!$resultadoCliente || !$resultadoEndereco || !$resultadoContato) {
+            throw new Exception('Houve um erro durante ao atualizar os dados cadastrais');
+        }
+
+        /* var_dump($resultadoLogin, $resultadoCliente, $resultadoEndereco, $resultadoContato);
+            die(); */
+        mysqli_commit($conexao);
+
+        return true;
+    } catch (Exception $exception) {
+        mysqli_rollback($conexao);
+
+        return false;
+    }
+
+    header('Location:alerta.php');
+    exit();
+
+
+    /* if(mysqli_query($conexao, $sql)){
+            header("Location:loja.php");
+            }
+        else {
+            $erro= mysqli_error($conexao);
+            echo ' Não Adicionado'; 
+            echo $erro; 
+            } */
+}
 
 function insereCamiseta($camiseta)
 {
@@ -255,13 +309,15 @@ function localizarcamiseta($conexao)
 }
 
 
-function realizarPedido($clienteId){
+function realizarPedido($clienteId, Usuario $usuario = null){
 
     $conexao = (new Conexao())->getConexao();
 
     mysqli_begin_transaction($conexao);
 
     try {
+
+        if($usuario && !atualizarCliente($usuario, $clienteId));
 
         $sqlPedido = "INSERT INTO pedidos (cliente_id) VALUES ('$clienteId')";
 
@@ -301,8 +357,8 @@ function realizarPedido($clienteId){
             "status" => true,
             "title" => "STATUS DO PEDIDO",
             "desc" =>  "Pedido realizado com sucesso, acompanhe a situação na página de pedidos",
-            "voltar_link" => 'loja.php', //colocar a pág. de pedidos
-            "voltar_title" => 'Voltar a Loja'
+            "voltar_link" => 'pedidos.php', //colocar a pág. de pedidos
+            "voltar_title" => 'Meus Pedidos'
         ];
 
     } catch (\Exception $e) {
@@ -328,11 +384,14 @@ function realizarPedido($clienteId){
 
     $conexao = (new Conexao())->getConexao();
 
-    $sql = "SELECT pedidos.id, pedidos.created_at, pedidos.updated_at, status.nome as status_nome, status.cor_bs as status_cor, COUNT(*) AS qtd_produtos 
+    $sql = "SELECT pedidos.id, pedidos.status_id, pedidos.created_at, pedidos.updated_at, status.nome as status_nome, 
+    status.cor_bs as status_cor, COUNT(*) AS qtd_produtos, SUM(produtos.preco * pedido_produtos.quantidade) as total_pedido
     FROM pedidos LEFT JOIN clientes ON clientes.id = pedidos.cliente_id 
     LEFT JOIN status ON status.id = pedidos.status_id 
     LEFT JOIN pedido_produtos ON pedido_produtos.pedido_id = pedidos.id 
-    GROUP BY pedidos.id";
+    LEFT JOIN produtos ON produtos.id = pedido_produtos.produto_id
+    WHERE clientes.id = '{$clienteId}' 
+    GROUP BY pedidos.id ORDER BY pedidos.created_at DESC";
 
     $resultado = mysqli_query($conexao, $sql);
 
