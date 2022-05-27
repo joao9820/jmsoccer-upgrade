@@ -33,9 +33,9 @@
             </h3>
 
             <div class="my-4">
-                <a href="index.php" class="btn btn-outline-secondary">PÁGINA INICIAL</a>
+               <!--  <a href="index.php" class="btn btn-outline-secondary">PÁGINA INICIAL</a> -->
                 <a href="camisetalista.php" class="btn btn-outline-info mx-3">LISTAR CAMISAS</a>
-                <a class="btn btn-outline-danger" href="logout.php">DESLOGAR</a>
+               <!--  <a class="btn btn-outline-danger" href="logout.php">DESLOGAR</a> -->
             </div>
 
 

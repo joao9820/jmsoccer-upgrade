@@ -15,3 +15,4 @@
 
 
 <body>
+<?php if(isset($_SESSION['usuario_logado']) && $_SESSION['usuario_logado']['is_admin']) require_once("navbar_admin.php") ?>

@@ -1,4 +1,5 @@
 <?php require_once("includes/loja/header_loja.php"); 
+if(!isset($_SESSION['usuario_logado'])) header("Location:loja.php");
 require_once("bancojmsoccer.php") ?>
   
   <style>
@@ -10,7 +11,7 @@ require_once("bancojmsoccer.php") ?>
   </style>
 
 	 <?php
-	    $pedidos = listarPedidos($_SESSION['usuario_logado']['cliente_id']);
+	    $pedidos = listarPedidos(false, $_SESSION['usuario_logado']['cliente_id']);
 	 ?>
 
   <div class="container">

@@ -380,18 +380,22 @@ function realizarPedido($clienteId, Usuario $usuario = null){
 
 }
 
- function listarPedidos($clienteId){
+ function listarPedidos($isAdmin, $clienteId = null){
 
     $conexao = (new Conexao())->getConexao();
 
     $sql = "SELECT pedidos.id, pedidos.status_id, pedidos.created_at, pedidos.updated_at, status.nome as status_nome, 
-    status.cor_bs as status_cor, COUNT(*) AS qtd_produtos, SUM(produtos.preco * pedido_produtos.quantidade) as total_pedido
+    status.cor_bs as status_cor, COUNT(*) AS qtd_produtos, SUM(produtos.preco * pedido_produtos.quantidade) as total_pedido,
+    clientes.nome as cliente_nome
     FROM pedidos LEFT JOIN clientes ON clientes.id = pedidos.cliente_id 
     LEFT JOIN status ON status.id = pedidos.status_id 
     LEFT JOIN pedido_produtos ON pedido_produtos.pedido_id = pedidos.id 
-    LEFT JOIN produtos ON produtos.id = pedido_produtos.produto_id
-    WHERE clientes.id = '{$clienteId}' 
-    GROUP BY pedidos.id ORDER BY pedidos.created_at DESC";
+    LEFT JOIN produtos ON produtos.id = pedido_produtos.produto_id ";
+
+    if(!$isAdmin && $clienteId)
+        $sql .= "WHERE clientes.id = '{$clienteId}' ";
+
+    $sql .= "GROUP BY pedidos.id ORDER BY pedidos.created_at DESC";
 
     $resultado = mysqli_query($conexao, $sql);
 
@@ -399,11 +403,54 @@ function realizarPedido($clienteId, Usuario $usuario = null){
 
     /* $dados = [];
 
-    if($resultado)
-        $dados =  mysqli_fetch_assoc($resultado);
+    if($resultado){
+
+        while($pedido = mysqli_fetch_assoc($resultado)){
+
+            $pedido['itens'] = verItensPedidos($pedido['id']);
+            
+            $dados[] = $pedido;
+
+        }
+
+    }
+        
 
     return $dados; */
 
+}
+
+function verItensPedidos($pedidoId){
+
+    $conexao = (new Conexao())->getConexao();
+
+    $sql = "SELECT produtos.id, produtos.nome, pedido_produtos.tamanho, 
+    SUM(pedido_produtos.quantidade) as qtd_total, SUM(produtos.preco * pedido_produtos.quantidade) as preco_total
+    FROM pedidos
+    INNER JOIN pedido_produtos ON pedido_produtos.pedido_id = pedidos.id 
+    INNER JOIN produtos ON produtos.id = pedido_produtos.produto_id
+    WHERE pedidos.id = '{$pedidoId}' GROUP BY produtos.id, pedido_produtos.tamanho";
+ 
+    return mysqli_query($conexao, $sql);
+
+}
+
+function statusPedido(){
+ 
+    $conexao = (new Conexao())->getConexao();
+
+    $sql = "SELECT * FROM status";
+
+    return mysqli_query($conexao, $sql);
+
+}
+
+function atualizarStatus($produtoId, $statusId){
+    $conexao = (new Conexao())->getConexao();
+
+    $sql = "UPDATE pedidos SET status_id = '{$statusId}' WHERE id = '{$produtoId}'";
+
+    
 }
 
 ?>

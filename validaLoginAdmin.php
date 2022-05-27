@@ -17,7 +17,7 @@
 	}else{
 
 		logaUsuario($usuario);
-		header('Location:cadastraCamisa.php');
+		header('Location:pedidosAdm.php');
 
 	}
 
