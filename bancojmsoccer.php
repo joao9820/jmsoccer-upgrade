@@ -315,11 +315,13 @@ function realizarPedido($clienteId, Usuario $usuario = null){
 
     mysqli_begin_transaction($conexao);
 
+    $codPedido = "JM" . substr(uniqid(), 0, 10) . "BR";
+
     try {
 
         if($usuario && !atualizarCliente($usuario, $clienteId));
 
-        $sqlPedido = "INSERT INTO pedidos (cliente_id) VALUES ('$clienteId')";
+        $sqlPedido = "INSERT INTO pedidos (cliente_id, codigo_rastreamento) VALUES ('$clienteId', '$codPedido')";
 
         $resultadoPedido = mysqli_query($conexao, $sqlPedido);
 
@@ -384,8 +386,8 @@ function realizarPedido($clienteId, Usuario $usuario = null){
 
     $conexao = (new Conexao())->getConexao();
 
-    $sql = "SELECT pedidos.id, pedidos.status_id, pedidos.created_at, pedidos.updated_at, status.nome as status_nome, 
-    status.cor_bs as status_cor, COUNT(*) AS qtd_produtos, SUM(produtos.preco * pedido_produtos.quantidade) as total_pedido,
+    $sql = "SELECT pedidos.id, pedidos.codigo_rastreamento, pedidos.status_id, pedidos.created_at, pedidos.updated_at, status.nome as status_nome, 
+    status.cor_bs as status_cor, SUM(pedido_produtos.quantidade) AS qtd_produtos, SUM(produtos.preco * pedido_produtos.quantidade) as total_pedido,
     clientes.nome as cliente_nome
     FROM pedidos LEFT JOIN clientes ON clientes.id = pedidos.cliente_id 
     LEFT JOIN status ON status.id = pedidos.status_id 
@@ -424,7 +426,7 @@ function verItensPedidos($pedidoId){
 
     $conexao = (new Conexao())->getConexao();
 
-    $sql = "SELECT produtos.id, produtos.nome, pedido_produtos.tamanho, 
+    $sql = "SELECT produtos.id as produto_id, pedidos.id as pedido_id, pedidos.status_id, produtos.nome, pedido_produtos.tamanho, 
     SUM(pedido_produtos.quantidade) as qtd_total, SUM(produtos.preco * pedido_produtos.quantidade) as preco_total
     FROM pedidos
     INNER JOIN pedido_produtos ON pedido_produtos.pedido_id = pedidos.id 
@@ -445,11 +447,16 @@ function statusPedido(){
 
 }
 
-function atualizarStatus($produtoId, $statusId){
+function atualizarStatus($pedidoId, $statusId){
     $conexao = (new Conexao())->getConexao();
 
-    $sql = "UPDATE pedidos SET status_id = '{$statusId}' WHERE id = '{$produtoId}'";
+    $sql = "UPDATE pedidos SET status_id = '{$statusId}' WHERE id = '{$pedidoId}'";
 
+    //var_dump($sql);
+
+    $resultado = mysqli_query($conexao, $sql);
+
+    return $resultado;
     
 }
 
