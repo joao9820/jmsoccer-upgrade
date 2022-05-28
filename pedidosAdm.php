@@ -186,7 +186,7 @@ require_once("bancojmsoccer.php") ?>
 
         body.appendChild(tr);
 
-        console.log(it);
+        //console.log(it);
        
         select.value = it.status_id;
         pedidoId.value = it.pedido_id;
