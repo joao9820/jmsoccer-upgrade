@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 21-Maio-2022 às 06:00
+-- Tempo de geração: 28-Maio-2022 às 07:35
 -- Versão do servidor: 10.4.13-MariaDB
 -- versão do PHP: 7.4.7
 
@@ -146,7 +146,7 @@ CREATE TABLE `endereco` (
 --
 
 INSERT INTO `endereco` (`id`, `cliente_id`, `endereco`, `numero`, `bairro`, `cidade`, `cep`, `uf`, `created_at`, `updated_at`) VALUES
-(7, 5, 'qne 12 dfsahf 213 ', NULL, NULL, 'São Paulo', '93128-398', 'SP', '2022-04-02 01:01:46', '2022-04-02 01:01:46'),
+(7, 5, 'QNE 10', 21, 'Taguatinga Norte (Taguatinga)', 'BrasÃ­lia', '72125-100', 'DF', '2022-04-02 01:01:46', '2022-04-02 01:01:46'),
 (8, 6, '', NULL, NULL, '', '', '', '2022-04-02 01:53:59', '2022-04-02 01:53:59'),
 (21, 19, 'dhf 213 hdhaf ', NULL, NULL, 'Baúru', '82378129', 'sp', '2022-04-02 02:31:57', '2022-04-02 02:31:57'),
 (22, 20, 'qne 132099 ', NULL, NULL, 'fasdofjaj', '72125-199', 'DF', '2022-04-22 22:10:41', '2022-04-22 22:10:41'),
@@ -199,6 +199,7 @@ INSERT INTO `login` (`id`, `is_admin`, `usuario`, `senha`) VALUES
 
 CREATE TABLE `pedidos` (
   `id` int(11) NOT NULL,
+  `codigo_rastreamento` varchar(250) DEFAULT NULL,
   `cliente_id` int(11) NOT NULL,
   `status_id` int(11) NOT NULL DEFAULT 3,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -209,22 +210,14 @@ CREATE TABLE `pedidos` (
 -- Extraindo dados da tabela `pedidos`
 --
 
-INSERT INTO `pedidos` (`id`, `cliente_id`, `status_id`, `created_at`, `updated_at`) VALUES
-(6, 5, 4, '2022-05-20 00:22:35', '2022-05-20 00:22:35'),
-(7, 5, 1, '2022-05-20 01:19:06', '2022-05-20 01:19:06'),
-(8, 5, 3, '2022-05-20 01:20:27', '2022-05-20 01:20:27'),
-(9, 5, 3, '2022-05-20 01:21:43', '2022-05-20 01:21:43'),
-(10, 5, 3, '2022-05-20 01:25:50', '2022-05-20 01:25:50'),
-(11, 5, 3, '2022-05-21 01:32:15', '2022-05-21 01:32:15'),
-(12, 5, 3, '2022-05-21 01:33:24', '2022-05-21 01:33:24'),
-(13, 30, 3, '2022-05-21 02:16:18', '2022-05-21 02:16:18'),
-(14, 30, 3, '2022-05-21 02:48:36', '2022-05-21 02:48:36'),
-(15, 30, 3, '2022-05-21 02:49:06', '2022-05-21 02:49:06'),
-(16, 30, 3, '2022-05-21 02:50:30', '2022-05-21 02:50:30'),
-(17, 30, 3, '2022-05-21 02:51:05', '2022-05-21 02:51:05'),
-(18, 30, 3, '2022-05-21 02:51:37', '2022-05-21 02:51:37'),
-(19, 30, 3, '2022-05-21 02:52:01', '2022-05-21 02:52:01'),
-(20, 5, 3, '2022-05-21 03:57:49', '2022-05-21 03:57:49');
+INSERT INTO `pedidos` (`id`, `codigo_rastreamento`, `cliente_id`, `status_id`, `created_at`, `updated_at`) VALUES
+(21, 'JM6290eb463aBR', 5, 3, '2022-05-27 15:16:22', '2022-05-27 15:16:22'),
+(22, 'JM629109572eBR', 5, 2, '2022-05-27 17:24:39', '2022-05-27 17:24:39'),
+(23, 'JM6291a4651aBR', 30, 3, '2022-05-28 04:26:13', '2022-05-28 04:26:13'),
+(24, 'JM6291adefd2BR', 30, 1, '2022-05-28 05:06:55', '2022-05-28 05:06:55'),
+(25, 'JM6291b32900BR', 5, 2, '2022-05-28 05:29:13', '2022-05-28 05:29:13'),
+(26, 'JM6291b39b90BR', 5, 1, '2022-05-28 05:31:07', '2022-05-28 05:31:07'),
+(27, 'JM6291b3bbe3BR', 30, 1, '2022-05-28 05:31:39', '2022-05-28 05:31:39');
 
 -- --------------------------------------------------------
 
@@ -269,7 +262,22 @@ INSERT INTO `pedido_produtos` (`pedido_id`, `produto_id`, `tamanho`, `quantidade
 (18, 10, 'P', 1),
 (19, 1, 'P', 1),
 (20, 1, 'P', 1),
-(20, 24, 'P', 1);
+(20, 24, 'P', 1),
+(21, 2, 'P', 1),
+(21, 3, 'P', 1),
+(21, 4, 'P', 1),
+(21, 1, 'P', 1),
+(21, 2, 'GG', 1),
+(22, 1, 'M', 4),
+(22, 24, 'P', 4),
+(23, 1, 'P', 4),
+(23, 4, 'P', 1),
+(24, 17, 'P', 4),
+(24, 24, 'P', 1),
+(25, 17, 'P', 4),
+(26, 24, 'P', 1),
+(26, 3, 'P', 2),
+(27, 2, 'P', 4);
 
 -- --------------------------------------------------------
 
@@ -306,7 +314,7 @@ INSERT INTO `produtos` (`id`, `cat_camiseta_id`, `nome`, `tamanho`, `modelo`, `c
 (10, 2, 'Camisa Liverpool', NULL, 'Clássico', NULL, NULL, '248.99', 'myQlQcXp.png', '2022-03-17 23:16:11', '2022-03-17 23:16:11'),
 (13, NULL, 'Flamengo', NULL, 'FLA-2021', 'VERMELHO', NULL, '0.00', NULL, '2022-03-19 01:54:22', '2022-03-19 01:54:22'),
 (16, NULL, 'Corinthians', NULL, 'corinthians-2021', 'branca', NULL, '350.25', NULL, '2022-03-19 01:56:21', '2022-03-19 01:56:21'),
-(17, 1, 'São Paulo', NULL, '2021', 'Branca', NULL, '250.00', 'camisa-sao-paulo.jpg', '2022-03-19 02:38:17', '2022-03-19 02:38:17'),
+(17, 1, 'Sao Paulo', NULL, '2021', 'Branca', NULL, '250.00', 'camisa-sao-paulo.jpg', '2022-03-19 02:38:17', '2022-03-19 02:38:17'),
 (24, 2, 'Flamengo', NULL, 'fds2', 'vermelha', NULL, '355.00', 'Camisa-Boca-Junior.jpg', '2022-04-22 23:42:24', '2022-04-22 23:42:24');
 
 -- --------------------------------------------------------
@@ -442,7 +450,7 @@ ALTER TABLE `login`
 -- AUTO_INCREMENT de tabela `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de tabela `produtos`

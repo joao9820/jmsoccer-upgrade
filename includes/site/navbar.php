@@ -23,10 +23,6 @@
                             <a href="https://www.campeoesdofutebol.com.br/especial20.html"
                             class="nav-link">Times</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="https://api.whatsapp.com/send?phone=5561998686918"
-                            class="nav-link">Contato</a>
-                        </li>
                         <li class="nav-item dropdown">
                             <a href="https://www.youtube.com/watch?v=BUvEEVq4woU" class="nav-link">Sobre
                                 nos</a>

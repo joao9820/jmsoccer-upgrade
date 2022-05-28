@@ -1,0 +1,18 @@
+#btn-whatsapp {
+  height: 50px;
+  width: 50px;
+  padding: 1.7rem;
+}
+
+.positionWhats {
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+  z-index: 99;
+}
+
+.grad {
+  background: radial-gradient(#14c226, #2eb644);
+  box-shadow: 2px 2px 6px 1px rgb(11 20 26 / 15%);
+  cursor: pointer;
+}

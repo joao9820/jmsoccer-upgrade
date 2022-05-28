@@ -71,7 +71,7 @@ require_once("bancojmsoccer.php") ?>
                           <td><?= date('d/m/Y à\s H:i:s', strtotime($pedido['updated_at'])) ?></td>
                           <td>
                           <div class="d-flex align-items-center">                              
-                              <button onclick='mostrarItensPedidos(`<?= json_encode($item) ?>`)' type="button" id="verItens" class="btn btn-outline-info ml-2 disabled"
+                              <button onclick='mostrarItensPedidos(`<?= json_encode($item) ?>`)' type="button" id="verItens" class="btn btn-outline-info"
                                 data-toggle="modal" data-target="#listaItens">
                                   <i class="fas fa-eye"></i>
                               </button>

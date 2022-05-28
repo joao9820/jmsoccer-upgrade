@@ -321,7 +321,7 @@ function realizarPedido($clienteId, Usuario $usuario = null){
 
         if($usuario && !atualizarCliente($usuario, $clienteId));
 
-        $sqlPedido = "INSERT INTO pedidos (cliente_id, codigo_rastreamento) VALUES ('$clienteId', '$codPedido')";
+        $sqlPedido = "INSERT INTO pedidos (cliente_id, codigo_rastreamento, status_id) VALUES ('$clienteId', '$codPedido', '1')";
 
         $resultadoPedido = mysqli_query($conexao, $sqlPedido);
 

@@ -65,7 +65,15 @@ require_once("bancojmsoccer.php") ?>
                           <td><?= date('d/m/Y à\s H:i:s', strtotime($pedido['updated_at'])) ?></td>
                           <td>
                             <div class="d-flex align-items-center">
-                              <button onclick='mostrarItensPedidos(`<?= json_encode($item) ?>`)' type="button" id="verItens" class="btn btn-outline-info ml-2"
+
+                            <?php if($pedido['status_id'] == 1) : ?>
+                              
+                              <button type="button" class="btn btn-success mr-2"
+                                    data-toggle="modal" data-target="#pagarPedido">
+                                      <i class="fas fa-dollar-sign"></i>
+                              </button>
+                            <?php endif; ?>
+                              <button onclick='mostrarItensPedidos(`<?= json_encode($item) ?>`)' type="button" id="verItens" class="btn btn-outline-info"
                                 data-toggle="modal" data-target="#listaItens">
                                   <i class="fas fa-eye"></i>
                               </button>
@@ -74,6 +82,7 @@ require_once("bancojmsoccer.php") ?>
                                   <a href="pedidoAtualizar.php?pedido_id=<?= $pedido['id'] ?>&status_id=5" role="button" id="alterarpedido" class="btn btn-outline-danger ml-2">
                                     <i class="fas fa-times"></i>
                                   </a>
+                                  
                                 <?php endif; ?>
                             </div>
                           </td>
@@ -91,6 +100,27 @@ require_once("bancojmsoccer.php") ?>
         </div>
     </div>
   </div>
+
+  <div class="modal fade" tabindex="-1" id="pagarPedido" aria-labelledby="PagarPedidoModal" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <!-- <div class="modal-header">
+        <h5 class="modal-title">Itens Pedido Nº <span id="infoPedidoId"></span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div> -->
+      <div class="modal-body">
+          <div class="d-flex justify-content-center">
+            <img src="Imagens/qr_code_picpay.jpeg" style="width: 100%">
+          </div>
+          <div class="mt-3">
+            <p>Para outras opções de pagamento acesse o link: <a href="https://nubank.com.br/pagar/vl46/Z1WAiXbNuW" target="_blank">https://nubank.com.br/pagar/vl46/Z1WAiXbNuW</a></p>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="modal fade" tabindex="-1" id="listaItens" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
