@@ -1,4 +1,9 @@
-<?php require_once("includes/site/header.php") ?>
+<?php
+
+use PhpMailerCustom\PhpMailerCustom;
+
+ require_once("PhpMailerCustom.php"); //$teste = new PhpMailerCustom() ?>
+<?php  require_once("includes/site/header.php") ?>
 
             <?php 
 				
