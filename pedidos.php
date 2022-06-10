@@ -57,7 +57,7 @@ require_once("bancojmsoccer.php") ?>
                   ?>
                       <tr>
                           <th scope="row"><?= $pedido['id'] ?></th>
-                          <th scope="row"><?= $pedido['codigo_rastreamento'] ?></th>
+                          <th scope="row"><?= $pedido['codigo_rastreamento'] ? $pedido['codigo_rastreamento'] : '--' ?></th>
                           <td><span class="badge badge-pill badge-<?= $pedido['status_cor'] ?>"><?= $pedido['status_nome'] ?></span></td>
                           <td><?= $pedido['qtd_produtos'] ?></td>
                           <td><?= 'R$ ' . $pedido['total_pedido'] ?></td>

@@ -315,13 +315,13 @@ function realizarPedido($clienteId, Usuario $usuario = null){
 
     mysqli_begin_transaction($conexao);
 
-    $codPedido = "JM" . substr(uniqid(), 0, 10) . "BR";
+    //$codPedido = "JM" . substr(uniqid(), 0, 10) . "BR";
 
     try {
 
         if($usuario && !atualizarCliente($usuario, $clienteId));
 
-        $sqlPedido = "INSERT INTO pedidos (cliente_id, codigo_rastreamento, status_id) VALUES ('$clienteId', '$codPedido', '1')";
+        $sqlPedido = "INSERT INTO pedidos (cliente_id, status_id) VALUES ('$clienteId', '1')";
 
         $resultadoPedido = mysqli_query($conexao, $sqlPedido);
 
