@@ -9,14 +9,17 @@ class PhpMailerCustom
 
     private $Resultado;
     private $DadosCredEmail;
+    private $email;
     private $Dados;
+    private $codRastreamento;
 
-    function __construct()
+    function __construct($email, $codRastreamento)
     {
-        $this->confEmail();
+        $this->email = $email;
+        $this->codRastreamento = $codRastreamento;
     }
 
-    private function confEmail()
+    public function enviarEmail()
     {
 
         $mail = new PHPMailer();
@@ -33,21 +36,19 @@ class PhpMailerCustom
                                             
             //Recipients
             $mail->setFrom('jmsoccer@gmail.com');
-            $mail->addAddress('cliente@gmail.com');
+            $mail->addAddress($this->email);
 
             //header()
         
             //Content
             $mail->isHTML(true);                                  // Set email format to HTML
             $mail->Subject = 'TESTE CÓD. RASTREIO';
-            $mail->Body = 'TESTE CÓD. RASTREIO';
+            $mail->Body = 'TESTE CÓD. RASTREIO = ' . $this->codRastreamento;
             $mail->AltBody = 'TESTE CÓD. RASTREIO';
 
-            
-
             if ($mail->send()) {
-                var_dump('ENVIADO');
-                die();
+                /* var_dump('ENVIADO');
+                die(); */
                /*  $alert = new AlertMensagem();
                 $_SESSION['msg'] = $alert->alertMensagemJavaScript("E-mail enviado com sucesso!","success");
                 $this->Resultado = true; */
@@ -57,8 +58,8 @@ class PhpMailerCustom
                 $this->Resultado = false; */
             }
         } catch (\Exception $e) {
-            var_dump($e);
-            die();
+            //var_dump($e);
+            //die();
             $this->Resultado = false;
         }
     }

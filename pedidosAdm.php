@@ -62,7 +62,7 @@ require_once("bancojmsoccer.php") ?>
                   ?>
                       <tr>
                           <th scope="row"><?= $pedido['id'] ?></th>
-                          <th scope="row"><?= $pedido['codigo_rastreamento'] ?></th>
+                          <th scope="row"><?= $pedido['codigo_rastreamento'] ? $pedido['codigo_rastreamento'] : '--' ?></th>
                           <th scope="row"><?= $pedido['cliente_nome'] ?></th>
                           <td><span class="badge badge-pill badge-<?= $pedido['status_cor'] ?>"><?= $pedido['status_nome'] ?></span></td>
                           <td><?= $pedido['qtd_produtos'] ?></td>
@@ -71,7 +71,7 @@ require_once("bancojmsoccer.php") ?>
                           <td><?= date('d/m/Y à\s H:i:s', strtotime($pedido['updated_at'])) ?></td>
                           <td>
                           <div class="d-flex align-items-center">                              
-                              <button onclick='mostrarItensPedidos(`<?= json_encode($item) ?>`)' type="button" id="verItens" class="btn btn-outline-info"
+                              <button onclick='mostrarItensPedidos(`<?= json_encode($item) ?>`,`<?= $pedido["cliente_nome"] ?>` ,`<?= $pedido["cliente_email"] ?>`)' type="button" id="verItens" class="btn btn-outline-info"
                                 data-toggle="modal" data-target="#listaItens">
                                   <i class="fas fa-eye"></i>
                               </button>
@@ -121,11 +121,16 @@ require_once("bancojmsoccer.php") ?>
             </tbody>
           </table>
 
-          <form method="GET" action="pedidoAtualizar.php" id="formPedido">
+          <form method="GET" action="pedidoAtualizar.php" id="formPedido" class="mt-5">
             <input id="pedido_id" name="pedido_id" type="hidden">
-            <div class="form-group mt-5">
+            <input id="emailCliente" name="email_cliente" type="hidden">
+            <div class="form-group">
+              <label for="codigo_rastreamento">Cód. Rastreamento</label>
+              <input type="text" placeholder="Adicionar código" name="codigo_rastreamento" id="codigoRastreamento" class="form-control" />
+            </div>
+            <div class="form-group">
               <label class="form-label">Status do Pedido</label>
-              <select name="status_id" id="status_id" class="form-control" onchange="updateStatus()">
+              <select name="status_id" id="status_id" class="form-control">
                 <option value="1">Aguardando Pagamento</option>
                 <option value="2">Pagamento Aprovado</option>
                 <option value="3">Preparando Entrega</option>
@@ -133,10 +138,14 @@ require_once("bancojmsoccer.php") ?>
                 <option value="5">Pedido Cancelado</option>
               </select>
             </div>
+            <div class="custom-control custom-checkbox mt-4">
+              <input type="checkbox" class="custom-control-input" id="enviarEmail" name="enviar_email"/>
+              <label class="custom-control-label" for="enviarEmail">Enviar e-mail para cliente <span id="nomeCliente"></span></label>
+            </div>
           </form>
-     
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer">      
+          <button onclick="updateStatus()" type="button" class="btn btn-primary">Salvar</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
       </div>
     </div>
@@ -146,10 +155,21 @@ require_once("bancojmsoccer.php") ?>
   <script>
 
     function updateStatus(){
+
+      const enviarEmail = document.getElementById('enviarEmail');
+
+      if(enviarEmail.checked){
+
+        if(!confirm('Você marcou a opção "Enviar e-mail para o cliente", os dados do pedido serão atualizados' +  
+        ' e o cód. de rastreamento será enviado para o cliente, deseja continuar?'))
+          return;
+
+      }
+      
       document.getElementById('formPedido').submit();
     }
 
-    function mostrarItensPedidos(dados){
+    function mostrarItensPedidos(dados, cliente_nome, cliente_email){
 
       //console.log(dados);
 
@@ -159,6 +179,9 @@ require_once("bancojmsoccer.php") ?>
      const select = document.getElementById('status_id');
      const pedidoId = document.getElementById('pedido_id');
      const infoPedidoId = document.getElementById('infoPedidoId');
+     const codigoRastreamento = document.getElementById('codigoRastreamento');
+     const nomeCliente = document.getElementById('nomeCliente');
+     const emailCliente = document.getElementById('emailCliente');
 
      body.innerHTML = "";
      //select.value = "";
@@ -190,9 +213,14 @@ require_once("bancojmsoccer.php") ?>
        
         select.value = it.status_id;
         pedidoId.value = it.pedido_id;
-        infoPedidoId.textContent = it.pedido_id
+        infoPedidoId.textContent = it.pedido_id;
+
+        codigoRastreamento.value = it.codigo_rastreamento;
 
       });
+
+      emailCliente.value = cliente_email;
+      nomeCliente.textContent = cliente_nome;
 
     }
 

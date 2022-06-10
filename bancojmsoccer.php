@@ -388,8 +388,9 @@ function realizarPedido($clienteId, Usuario $usuario = null){
 
     $sql = "SELECT pedidos.id, pedidos.codigo_rastreamento, pedidos.status_id, pedidos.created_at, pedidos.updated_at, status.nome as status_nome, 
     status.cor_bs as status_cor, SUM(pedido_produtos.quantidade) AS qtd_produtos, SUM(produtos.preco * pedido_produtos.quantidade) as total_pedido,
-    clientes.nome as cliente_nome
-    FROM pedidos LEFT JOIN clientes ON clientes.id = pedidos.cliente_id 
+    clientes.nome as cliente_nome, contatos.email as cliente_email
+    FROM pedidos LEFT JOIN clientes ON clientes.id = pedidos.cliente_id
+    LEFT JOIN contatos ON contatos.cliente_id = clientes.id 
     LEFT JOIN status ON status.id = pedidos.status_id 
     LEFT JOIN pedido_produtos ON pedido_produtos.pedido_id = pedidos.id 
     LEFT JOIN produtos ON produtos.id = pedido_produtos.produto_id ";
@@ -427,7 +428,7 @@ function verItensPedidos($pedidoId){
     $conexao = (new Conexao())->getConexao();
 
     $sql = "SELECT produtos.id as produto_id, pedidos.id as pedido_id, pedidos.status_id, produtos.nome, pedido_produtos.tamanho, 
-    SUM(pedido_produtos.quantidade) as qtd_total, SUM(produtos.preco * pedido_produtos.quantidade) as preco_total
+    SUM(pedido_produtos.quantidade) as qtd_total, SUM(produtos.preco * pedido_produtos.quantidade) as preco_total, pedidos.codigo_rastreamento
     FROM pedidos
     INNER JOIN pedido_produtos ON pedido_produtos.pedido_id = pedidos.id 
     INNER JOIN produtos ON produtos.id = pedido_produtos.produto_id
@@ -447,10 +448,10 @@ function statusPedido(){
 
 }
 
-function atualizarStatus($pedidoId, $statusId){
+function atualizarStatus($pedidoId, $statusId, $codRastreamento){
     $conexao = (new Conexao())->getConexao();
 
-    $sql = "UPDATE pedidos SET status_id = '{$statusId}' WHERE id = '{$pedidoId}'";
+    $sql = "UPDATE pedidos SET status_id = '{$statusId}', codigo_rastreamento = '{$codRastreamento}' WHERE id = '{$pedidoId}'";
 
     //var_dump($sql);
 
